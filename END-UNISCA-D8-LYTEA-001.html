@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAPPORT D'INCIDENT // END-UNISCA-D8-LYTEA-001 // FIN DE LA RUCHE — DESTRUCTION LYTÉA</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --combine-orange: #c44040;
+  --combine-orange-dim: #7a2424;
+  --combine-orange-glow: rgba(180,55,55,0.15);
+  --combine-blue: #62d8ec;
+  --combine-blue-dim: #3a9eb0;
+  --bg-dark: #070c10;
+  --bg-panel: rgba(18, 26, 34, 0.92);
+  --bg-panel2: rgba(22, 32, 42, 0.92);
+  --bg-panel3: #0a1016;
+  --text-primary: #faf6ee;
+  --text-secondary: #dce8ee;
+  --text-dim: #b4c4d0;
+  --border-main: #3a4d60;
+  --border-accent: #4a6278;
+  --red-alert: #e85555;
+  --green-ok: #5cb87a;
+  --scan-line: rgba(0, 14, 10, 0.07);
+  --glass-blur: blur(8px);
+  --crt-vignette-edge: rgba(0, 0, 0, 0.38);
+  --vort-green: #4ecb71;
+  --vort-green-dim: #2a7a3e;
+  --vort-green-glow: rgba(78,203,113,0.15);
+  --lytea-purple: #a078e8;
+  --lytea-purple-dim: #6040a0;
+  --lytea-purple-glow: rgba(160,120,232,0.15);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; min-height: 100%; }
+
+html::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 1001;
+  pointer-events: none;
+  background: radial-gradient(ellipse 88% 78% at 50% 50%, transparent 0%, transparent 52%, var(--crt-vignette-edge) 100%);
+  opacity: 0.48;
+}
+
+html::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 1002;
+  pointer-events: none;
+  background: linear-gradient(183deg, rgba(60,18,18,0.06) 0%, rgba(30,10,10,0.03) 38%, rgba(45,14,14,0.05) 100%);
+  mix-blend-mode: soft-light;
+}
+
+body {
+  background: var(--bg-dark);
+  color: var(--text-primary);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 17px;
+  line-height: 1.75;
+  font-weight: 500;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-dark); border-left: 1px solid var(--border-main); }
+::-webkit-scrollbar-thumb { background: var(--combine-orange-dim); }
+::-webkit-scrollbar-thumb:hover { background: var(--combine-orange); }
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: repeating-linear-gradient(0deg, transparent 0, transparent 2px, var(--scan-line) 2px, var(--scan-line) 3px);
+  pointer-events: none;
+  z-index: 1000;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 999;
+  opacity: 0.28;
+}
+
+.doc-watermark {
+  position: fixed;
+  inset: 0;
+  z-index: 550;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='200' viewBox='0 0 360 200'%3E%3Ctext x='180' y='102' fill='%23faf6ee' fill-opacity='0.030' font-family='Arial,sans-serif' font-size='19' font-weight='700' text-anchor='middle' dominant-baseline='middle' transform='rotate(-28 180 100)'%3ECONFIDENTIEL%3C/text%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 360px 200px;
+}
+
+.boot-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: var(--bg-dark);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  transition: opacity 1.6s ease-in-out;
+  pointer-events: none;
+}
+.boot-overlay.fade-out { opacity: 0; visibility: hidden; }
+.boot-header {
+  font-family: 'Orbitron', monospace;
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  color: var(--combine-orange-dim);
+  text-align: center;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--combine-orange-dim);
+  padding-bottom: 14px;
+  width: 520px;
+  max-width: 90vw;
+}
+.boot-header .bh-main {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--combine-orange);
+  letter-spacing: 0.2em;
+  display: block;
+  margin-bottom: 6px;
+  text-shadow: 0 0 14px rgba(180,55,55,0.5);
+}
+.boot-header .bh-author { font-size: 10px; color: var(--text-dim); letter-spacing: 0.15em; }
+.boot-text {
+  font-family: 'Share Tech Mono', monospace;
+  color: var(--combine-orange);
+  font-size: 12.5px;
+  text-align: left;
+  line-height: 2.2;
+  letter-spacing: 0.09em;
+  width: 520px;
+  max-width: 90vw;
+  min-height: 200px;
+}
+.boot-cursor {
+  display: inline-block;
+  width: 8px; height: 14px;
+  background: var(--combine-orange);
+  margin-left: 2px;
+  vertical-align: middle;
+  animation: cursor-blink 0.7s step-end infinite;
+}
+@keyframes cursor-blink { 50% { opacity: 0; } }
+@keyframes logo-pulse {
+  0%, 100% { filter: drop-shadow(0 0 14px rgba(180,55,55,0.45)) brightness(0.9) saturate(0.65); }
+  50%       { filter: drop-shadow(0 0 28px rgba(180,55,55,0.75)) brightness(1.0) saturate(0.8); }
+}
+
+.c-header {
+  background: linear-gradient(180deg, rgba(10,15,20,0.97) 0%, rgba(13,18,21,0.97) 100%);
+  backdrop-filter: var(--glass-blur);
+  border-bottom: 2px solid var(--combine-orange-dim);
+  position: sticky;
+  top: 0;
+  z-index: 500;
+  box-shadow: 0 4px 30px rgba(180,55,55,0.10);
+}
+.c-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 30px;
+  border-bottom: 1px solid var(--border-main);
+}
+.c-logo { display: flex; align-items: center; gap: 14px; }
+.c-logo-emblem {
+  height: 48px;
+  padding: 3px;
+  border: 2px solid var(--combine-orange);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--combine-orange-glow);
+  animation: emblem-pulse 3s ease-in-out infinite;
+}
+@keyframes emblem-pulse {
+  0%,100% { box-shadow: 0 0 8px rgba(180,55,55,0.4); }
+  50% { box-shadow: 0 0 22px rgba(180,55,55,0.75); }
+}
+.c-logo-text { font-family: 'Orbitron', monospace; }
+.c-logo-text .line1 { font-size: 11px; letter-spacing: 0.15em; color: var(--combine-orange); font-weight: 700; }
+.c-logo-text .line2 { font-size: 9px; letter-spacing: 0.1em; color: var(--text-dim); font-weight: 400; }
+.c-header-status { display: flex; align-items: center; gap: 24px; }
+.status-item { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--text-dim); letter-spacing: 0.08em; text-align: right; }
+.status-item span { display: block; color: var(--text-secondary); }
+.status-item .val { color: var(--combine-orange); }
+.status-item .val-red { color: var(--red-alert); }
+.status-item .val-green { color: var(--vort-green); }
+.status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--combine-orange); animation: blink-orange 1.8s step-end infinite; box-shadow: 0 0 8px var(--combine-orange); }
+@keyframes blink-orange { 50% { opacity: 0.2; } }
+@keyframes blink-red { 50% { opacity: 0.2; } }
+.c-header-title-bar {
+  padding: 8px 30px;
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+  background: rgba(180,55,55,0.04);
+}
+.c-header-title-bar h1 { font-family: 'Orbitron', monospace; font-size: 13px; font-weight: 700; letter-spacing: 0.12em; color: var(--combine-orange); text-transform: uppercase; }
+.c-header-title-bar .sub { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--text-dim); letter-spacing: 0.06em; }
+.clearance-badge {
+  margin-left: auto;
+  background: rgba(196,48,48,0.15);
+  border: 1px solid var(--red-alert);
+  color: var(--red-alert);
+  font-family: 'Orbitron', monospace;
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  padding: 3px 10px;
+  border-radius: 2px;
+  animation: blink-red 2s step-end infinite;
+}
+
+.ticker {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.13em;
+  font-weight: 700;
+  color: var(--combine-orange);
+  padding: 5px 30px;
+  background: rgba(20, 10, 0, 0.92);
+  border-top: 1px solid rgba(180,55,55,0.5);
+  border-bottom: 2px solid rgba(180,55,55,0.7);
+  overflow: hidden;
+  white-space: nowrap;
+  text-shadow: 0 0 8px rgba(180,55,55,0.5);
+}
+.ticker-inner { display: inline-block; animation: ticker-scroll 130s linear infinite; }
+@keyframes ticker-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+.c-layout {
+  display: grid;
+  grid-template-columns: 268px 1fr;
+  min-height: calc(100vh - 110px);
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.c-sidebar {
+  background: var(--bg-panel3);
+  border-right: 1px solid var(--border-main);
+  padding: 20px 0;
+  position: sticky;
+  top: 110px;
+  height: calc(100vh - 110px);
+  overflow-y: auto;
+}
+.c-sidebar::-webkit-scrollbar { width: 4px; }
+.c-sidebar::-webkit-scrollbar-thumb { background: var(--combine-orange-dim); }
+.sidebar-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  padding: 8px 16px 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.sidebar-label::before { content: ''; width: 12px; height: 1px; background: var(--text-dim); }
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 16px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: all 0.15s;
+  border-left: 2px solid transparent;
+}
+.sidebar-link:hover { color: var(--combine-orange); background: var(--combine-orange-glow); border-left-color: var(--combine-orange); }
+.sidebar-link .idx { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--text-dim); min-width: 22px; }
+.sidebar-link.vort { color: #90dba8; }
+.sidebar-link.vort:hover { color: var(--vort-green); background: var(--vort-green-glow); border-left-color: var(--vort-green); }
+.sidebar-link.danger { color: #e88888; }
+.sidebar-link.danger:hover { color: var(--red-alert); background: rgba(232,85,85,0.08); border-left-color: var(--red-alert); }
+.sidebar-link.orange { color: #f0c070; }
+.sidebar-link.orange:hover { color: var(--combine-orange); background: var(--combine-orange-glow); border-left-color: var(--combine-orange); }
+.sidebar-divider { height: 1px; background: var(--border-main); margin: 10px 16px; }
+.sidebar-meta { padding: 14px 16px; background: rgba(180,55,55,0.04); border-top: 1px solid var(--border-main); }
+.sidebar-meta .meta-row { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--text-dim); margin-bottom: 5px; display: flex; justify-content: space-between; }
+.sidebar-meta .meta-row span { color: var(--text-secondary); }
+.sidebar-meta .meta-row .val-orange { color: var(--combine-orange); }
+.sidebar-meta .meta-row .val-green { color: var(--vort-green); }
+.sidebar-meta .meta-row .val-red { color: var(--red-alert); }
+
+.c-main { padding: 32px 42px; max-width: 960px; }
+.c-main p { margin-bottom: 0.85em; max-width: 70ch; }
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 28px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border-accent);
+  position: relative;
+}
+.section-header::after {
+  content: '';
+  position: absolute;
+  bottom: -1px; left: 0;
+  width: 80px; height: 2px;
+  background: var(--combine-orange);
+  box-shadow: 0 0 8px var(--combine-orange);
+}
+.section-num {
+  font-family: 'Orbitron', monospace;
+  font-size: 12px;
+  color: var(--combine-orange);
+  background: rgba(180,55,55,0.12);
+  border: 1px solid var(--combine-orange-dim);
+  padding: 6px 10px;
+  letter-spacing: 0.1em;
+  min-width: 64px;
+  text-align: center;
+  text-shadow: 0 0 5px rgba(180,55,55,0.5);
+}
+.section-num.danger { color: var(--red-alert); background: rgba(232,85,85,0.12); border-color: rgba(232,85,85,0.5); text-shadow: 0 0 5px rgba(232,85,85,0.5); }
+.section-num.vort { color: var(--vort-green); background: rgba(78,203,113,0.12); border-color: var(--vort-green-dim); text-shadow: 0 0 5px rgba(78,203,113,0.5); }
+.section-title { font-family: 'Orbitron', monospace; font-size: 15px; font-weight: 700; letter-spacing: 0.12em; color: var(--text-primary); text-transform: uppercase; }
+.section-title-sub { font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 0.1em; color: var(--text-secondary); margin-top: 6px; }
+
+.c-section { margin-bottom: 58px; animation: fade-in-up 0.6s ease-out forwards; opacity: 0; transform: translateY(20px); }
+.c-section:nth-child(1) { animation-delay: 2.0s; }
+.c-section:nth-child(2) { animation-delay: 2.15s; }
+.c-section:nth-child(3) { animation-delay: 2.3s; }
+.c-section:nth-child(4) { animation-delay: 2.45s; }
+.c-section:nth-child(5) { animation-delay: 2.6s; }
+.c-section:nth-child(6) { animation-delay: 2.75s; }
+.c-section:nth-child(7) { animation-delay: 2.9s; }
+.c-section:nth-child(8) { animation-delay: 3.05s; }
+.c-section:nth-child(9) { animation-delay: 3.2s; }
+.c-section:nth-child(10) { animation-delay: 3.35s; }
+.c-section:nth-child(n+11) { animation-delay: 3.5s; }
+@keyframes fade-in-up { to { opacity: 1; transform: translateY(0); } }
+
+.panel {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-main);
+  border-left: 3px solid var(--combine-orange-dim);
+  padding: 20px 22px;
+  margin-bottom: 16px;
+  position: relative;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+.panel:hover { box-shadow: 0 4px 20px var(--combine-orange-glow); transform: translateY(-2px); }
+.panel::before { content: attr(data-label); position: absolute; top: -1px; right: 16px; font-family: 'Share Tech Mono', monospace; font-size: 8px; letter-spacing: 0.12em; color: var(--combine-orange); background: var(--bg-panel); padding: 0 6px; text-transform: uppercase; }
+.panel-blue { border-left-color: var(--combine-blue-dim); }
+.panel-blue::before { color: var(--combine-blue); }
+.panel-red { border-left-color: rgba(232,85,85,0.7); }
+.panel-red::before { color: var(--red-alert); }
+.panel-vort { border-left-color: var(--vort-green-dim); }
+.panel-vort::before { color: var(--vort-green); }
+.panel h3 { font-family: 'Rajdhani', sans-serif; font-size: 18px; font-weight: 700; color: var(--combine-orange); letter-spacing: 0.05em; margin-bottom: 10px; text-shadow: 0 0 8px rgba(180,55,55,0.3); }
+.panel h3.red { color: var(--red-alert); }
+.panel h3.vort { color: var(--vort-green); }
+.panel p { font-size: 16px; font-weight: 500; color: var(--text-secondary); line-height: 1.82; margin-bottom: 14px; }
+.panel p:last-child { margin-bottom: 0; }
+
+.data-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin-bottom: 16px; }
+.data-cell { background: var(--bg-panel2); border: 1px solid var(--border-main); border-top: 2px solid var(--combine-orange-dim); padding: 14px 16px; transition: all 0.2s ease; cursor: default; }
+.data-cell:hover { background: rgba(180,55,55,0.05); border-top-color: var(--combine-orange); transform: translateY(-2px); }
+.data-cell.dc-red { border-top-color: rgba(232,85,85,0.6); }
+.data-cell.dc-green { border-top-color: rgba(78,203,113,0.6); }
+.data-cell.dc-vort { border-top-color: var(--vort-green-dim); }
+.data-cell .dc-label { font-family: 'Share Tech Mono', monospace; font-size: 9px; letter-spacing: 0.1em; color: var(--text-dim); text-transform: uppercase; margin-bottom: 6px; }
+.data-cell .dc-value { font-family: 'Orbitron', monospace; font-size: 15px; font-weight: 700; color: var(--combine-orange); text-shadow: 0 0 10px rgba(180,55,55,0.4); }
+.data-cell .dc-value.green { color: var(--vort-green); text-shadow: 0 0 10px rgba(78,203,113,0.4); }
+.data-cell .dc-value.red { color: var(--red-alert); text-shadow: 0 0 10px rgba(232,85,85,0.4); }
+.data-cell .dc-sub { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--text-dim); margin-top: 6px; line-height: 1.45; }
+
+.c-table-wrapper { overflow-x: auto; margin-bottom: 16px; border: 1px solid var(--border-main); }
+.c-table { width: 100%; border-collapse: collapse; font-family: 'Rajdhani', sans-serif; font-size: 15px; }
+.c-table thead tr { background: rgba(180,55,55,0.08); border-bottom: 2px solid var(--combine-orange-dim); }
+.c-table th { font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 0.1em; color: var(--combine-orange); text-transform: uppercase; padding: 12px 16px; text-align: left; }
+.c-table td { padding: 12px 16px; color: var(--text-secondary); font-weight: 500; border-bottom: 1px solid var(--border-main); vertical-align: top; }
+.c-table tbody tr:hover { background: rgba(180,55,55,0.05); }
+.c-table tbody tr:nth-child(even) { background: rgba(0,0,0,0.3); }
+.c-table .highlight { color: var(--combine-orange); font-weight: 700; }
+.c-table .highlight-red { color: var(--red-alert); font-weight: 700; }
+.c-table .highlight-green { color: var(--vort-green); font-weight: 700; }
+
+.c-list { list-style: none; margin-bottom: 16px; }
+.c-list li { display: flex; align-items: flex-start; gap: 12px; padding: 8px 10px; border-bottom: 1px solid rgba(46,64,80,0.5); color: var(--text-secondary); font-size: 15px; line-height: 1.65; transition: all 0.2s; }
+.c-list li:last-child { border-bottom: none; }
+.c-list li:hover { background: rgba(180,55,55,0.04); color: var(--text-primary); transform: translateX(4px); }
+.c-list li::before { content: '>>'; font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--combine-orange-dim); flex-shrink: 0; margin-top: 4px; }
+
+.info-box { background: rgba(74,197,216,0.08); border: 1px solid rgba(74,197,216,0.3); border-left: 3px solid var(--combine-blue-dim); padding: 16px 20px; margin-bottom: 18px; display: flex; gap: 14px; }
+.info-box .info-icon { font-family: 'Share Tech Mono', monospace; font-size: 14px; color: var(--combine-blue); flex-shrink: 0; margin-top: 2px; }
+.info-box .info-text { font-size: 14px; color: var(--text-secondary); line-height: 1.7; }
+
+.vort-box { background: rgba(78,203,113,0.07); border: 1px solid rgba(78,203,113,0.3); border-left: 3px solid var(--vort-green-dim); padding: 16px 20px; margin-bottom: 18px; display: flex; gap: 14px; animation: vort-pulse 4s ease-in-out infinite alternate; }
+@keyframes vort-pulse { 0% { box-shadow: 0 0 5px rgba(78,203,113,0.08); } 100% { box-shadow: 0 0 18px rgba(78,203,113,0.28); } }
+.vort-box .vort-icon { font-family: 'Share Tech Mono', monospace; font-size: 14px; color: var(--vort-green); flex-shrink: 0; margin-top: 2px; text-shadow: 0 0 8px var(--vort-green); }
+.vort-box .vort-text { font-size: 14px; color: #a0d4b0; line-height: 1.7; }
+.vort-box .vort-text strong { color: #c4e8cc; }
+
+.alert-box { background: rgba(232,85,85,0.08); border: 1px solid rgba(232,85,85,0.3); border-left: 3px solid rgba(232,85,85,0.7); padding: 16px 20px; margin-bottom: 18px; display: flex; gap: 14px; }
+.alert-box .alert-icon { font-family: 'Share Tech Mono', monospace; font-size: 14px; color: var(--red-alert); flex-shrink: 0; margin-top: 2px; }
+.alert-box .alert-text { font-size: 14px; color: #e0b0b0; line-height: 1.7; }
+.alert-box .alert-text strong { color: #f0d0d0; }
+
+.success-box { background: rgba(78,203,113,0.07); border: 1px solid rgba(78,203,113,0.35); border-left: 3px solid var(--vort-green-dim); padding: 16px 20px; margin-bottom: 18px; display: flex; gap: 14px; }
+.success-box .success-icon { font-family: 'Share Tech Mono', monospace; font-size: 14px; color: var(--vort-green); flex-shrink: 0; margin-top: 2px; }
+.success-box .success-text { font-size: 14px; color: #a0d4b0; line-height: 1.7; }
+.success-box .success-text strong { color: #c4e8cc; }
+
+.cite-terminal { border-left: 3px solid var(--combine-orange); background: linear-gradient(180deg, rgba(14,20,26,0.98) 0%, rgba(8,12,18,0.99) 100%); margin-bottom: 24px; }
+.cite-terminal-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 14px 20px 12px 18px; border-bottom: 1px solid var(--border-main); }
+.cite-terminal .cite-terminal-title { font-family: 'Rajdhani', sans-serif; font-size: 16px; font-weight: 700; color: var(--text-primary); }
+.cite-terminal-tag { font-family: 'Share Tech Mono', monospace; font-size: 9px; letter-spacing: 0.16em; color: var(--combine-orange); white-space: nowrap; margin-top: 3px; }
+.cite-terminal-row { display: flex; align-items: flex-start; gap: 12px; padding: 12px 20px 12px 18px; border-bottom: 1px solid rgba(46,64,80,0.55); font-size: 15.5px; font-weight: 500; line-height: 1.75; color: var(--text-secondary); }
+.cite-terminal-row:last-child { border-bottom: none; }
+.cite-terminal-chev { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--combine-orange); flex-shrink: 0; margin-top: 4px; }
+.cite-terminal-chev.vort { color: var(--vort-green); text-shadow: 0 0 5px var(--vort-green); }
+.cite-terminal-chev.red { color: var(--red-alert); }
+.cite-terminal-text { flex: 1; min-width: 0; }
+.cite-terminal-text .lab { font-weight: 700; color: var(--text-primary); }
+.cite-terminal-text .lab.vort-name { color: var(--vort-green); }
+.cite-terminal-text .lab.orange { color: var(--combine-orange); }
+
+.phase-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 14px; margin-bottom: 20px; }
+.phase-card { background: var(--bg-panel); border: 1px solid var(--border-main); padding: 18px 20px; position: relative; overflow: hidden; transition: all 0.3s ease; }
+.phase-card:hover { border-color: var(--combine-orange-dim); box-shadow: 0 8px 25px rgba(180,55,55,0.12); transform: translateY(-4px); }
+.phase-card::after { content: ''; position: absolute; top: 0; right: 0; width: 0; height: 0; border-style: solid; border-width: 0 28px 28px 0; border-color: transparent var(--combine-orange-dim) transparent transparent; }
+.phase-card.danger::after { border-color: transparent rgba(232,85,85,0.5) transparent transparent; }
+.phase-card.vort::after { border-color: transparent var(--vort-green-dim) transparent transparent; }
+.phase-num { font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 0.12em; color: var(--combine-orange); margin-bottom: 6px; }
+.phase-num.danger { color: var(--red-alert); }
+.phase-num.vort { color: var(--vort-green); }
+.phase-name { font-family: 'Rajdhani', sans-serif; font-size: 16px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px; line-height: 1.3; }
+.phase-desc { font-size: 13.5px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 10px; }
+.phase-duration { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--combine-orange-dim); border-top: 1px solid var(--border-main); padding-top: 9px; }
+.phase-duration.danger { color: rgba(232,85,85,0.7); }
+.phase-duration.vort { color: var(--vort-green-dim); }
+
+.c-sep { height: 1px; background: linear-gradient(90deg, var(--combine-orange-dim), transparent); margin: 28px 0; }
+
+.team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-bottom: 14px; }
+.team-card { background: var(--bg-panel2); border: 1px solid var(--border-main); padding: 14px; display: flex; gap: 12px; align-items: flex-start; }
+.team-avatar { width: 44px; height: 44px; border: 1px solid var(--combine-orange-dim); background: rgba(180,55,55,0.08); display: flex; align-items: center; justify-content: center; font-family: 'Orbitron', monospace; font-size: 12px; color: var(--combine-orange); flex-shrink: 0; }
+.team-avatar.mil { border-color: rgba(180,140,80,0.5); background: rgba(180,140,80,0.08); color: #d4a840; }
+.team-avatar.vort { border-color: rgba(78,203,113,0.6); background: rgba(78,203,113,0.12); color: var(--vort-green); }
+.team-avatar.dead { border-color: rgba(232,85,85,0.4); background: rgba(232,85,85,0.06); color: var(--red-alert); }
+.team-avatar.pc { border-color: rgba(100,160,220,0.5); background: rgba(100,160,220,0.08); color: #6ab0e0; }
+.team-name { font-family: 'Rajdhani', sans-serif; font-size: 15px; font-weight: 700; color: var(--text-primary); }
+.team-role { font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 0.06em; color: var(--text-secondary); margin-top: 4px; line-height: 1.5; }
+.team-role.dead { color: var(--red-alert); }
+.team-role.vort { color: var(--vort-green); }
+.team-role.hero { color: var(--combine-orange); }
+
+.field-sketch {
+  margin: 22px 0;
+  border: 1px solid var(--border-main);
+  border-top: 2px solid var(--combine-orange-dim);
+  background: rgba(8,12,18,0.95);
+  overflow: hidden;
+  position: relative;
+}
+.field-sketch::before {
+  content: attr(data-caption);
+  display: block;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 8.5px;
+  letter-spacing: 0.14em;
+  color: var(--combine-orange);
+  text-transform: uppercase;
+  padding: 6px 14px;
+  background: rgba(180,55,55,0.07);
+  border-bottom: 1px solid var(--border-main);
+}
+.field-sketch img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: brightness(0.82) contrast(1.08) saturate(0.55) sepia(0.18);
+  opacity: 0.88;
+  transition: filter 0.4s, opacity 0.4s;
+}
+.field-sketch:hover img {
+  filter: brightness(0.9) contrast(1.05) saturate(0.7) sepia(0.1);
+  opacity: 0.96;
+}
+.field-sketch .sketch-footer {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+  padding: 5px 14px;
+  border-top: 1px solid var(--border-main);
+  background: rgba(0,0,0,0.4);
+}
+
+code { font-family: 'Share Tech Mono', monospace; font-size: 12px; color: var(--combine-blue); background: rgba(58,181,200,0.07); padding: 1px 5px; border: 1px solid rgba(58,181,200,0.15); }
+strong { color: var(--text-primary); font-weight: 700; }
+.c-main h2 { font-family: 'Orbitron', monospace; font-size: 12.5px; letter-spacing: 0.1em; color: var(--combine-orange); text-transform: uppercase; margin: 24px 0 12px; }
+.c-main h3 { font-family: 'Rajdhani', sans-serif; font-size: 17px; font-weight: 700; color: var(--text-primary); margin: 18px 0 10px; border-left: 3px solid var(--combine-orange-dim); padding-left: 10px; }
+
+.reader-note { background: rgba(180,55,55,0.07); border: 1px solid rgba(180,55,55,0.25); border-left: 3px solid var(--combine-orange-dim); padding: 18px 22px; margin-bottom: 22px; font-size: 16px; font-weight: 500; line-height: 1.82; color: var(--text-secondary); }
+.reader-note strong { color: var(--text-primary); }
+.reader-note .rn-title { font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 0.12em; color: var(--combine-orange); text-transform: uppercase; margin-bottom: 10px; }
+
+.sacrifice-banner {
+  background: linear-gradient(135deg, rgba(78,203,113,0.08) 0%, rgba(14,20,28,0.95) 60%);
+  border: 1px solid rgba(78,203,113,0.4);
+  border-top: 3px solid var(--vort-green);
+  padding: 24px 28px;
+  margin-bottom: 24px;
+  text-align: center;
+  animation: sacrifice-glow 3s ease-in-out infinite alternate;
+}
+@keyframes sacrifice-glow {
+  0% { box-shadow: 0 0 10px rgba(78,203,113,0.1); }
+  100% { box-shadow: 0 0 30px rgba(78,203,113,0.3); }
+}
+.sacrifice-banner .sb-title { font-family: 'Orbitron', monospace; font-size: 16px; font-weight: 700; color: var(--vort-green); letter-spacing: 0.18em; text-shadow: 0 0 14px rgba(78,203,113,0.6); margin-bottom: 10px; }
+.sacrifice-banner .sb-sub { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: #90dba8; letter-spacing: 0.1em; }
+.sacrifice-banner .sb-quote { font-family: 'Rajdhani', sans-serif; font-size: 19px; font-weight: 600; color: #c4e8cc; font-style: italic; margin: 18px 0 8px; line-height: 1.5; }
+
+.c-footer { background: var(--bg-panel3); border-top: 2px solid var(--combine-orange-dim); padding: 16px 30px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px 20px; }
+.c-footer .left { font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 0.08em; color: var(--text-secondary); line-height: 1.8; }
+.c-footer .right { font-family: 'Orbitron', monospace; font-size: 8px; letter-spacing: 0.12em; color: var(--combine-orange-dim); text-align: right; line-height: 1.8; }
+
+@media (max-width: 860px) {
+  .c-layout { grid-template-columns: 1fr; }
+  .c-sidebar { display: none; }
+  .c-main { padding: 20px 18px; }
+}
+@media print {
+  @page { size: A4; margin: 12mm; }
+  html::before, html::after, body::before, body::after { display: none !important; }
+  body { background: #fff !important; font-size: 10pt; line-height: 1.5; color: #111; }
+  .boot-overlay, .doc-watermark, .ticker { display: none !important; }
+  .c-header { position: static !important; background: #fff !important; border-bottom: 2px solid #222 !important; }
+  .c-section { opacity: 1 !important; transform: none !important; animation: none !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="doc-watermark"></div>
+
+<div class="boot-overlay" id="bootOverlay">
+  <img src="unisca-logo.png" alt="UNISCA" style="width:110px;height:110px;object-fit:contain;border-radius:50%;filter:drop-shadow(0 0 18px rgba(180,55,55,0.55)) brightness(0.92) saturate(0.7);animation:logo-pulse 3s ease-in-out infinite;">
+  <div class="boot-header">
+    <span class="bh-main">UNISCA // TERMINAL SÉCURISÉ</span>
+    <span class="bh-author">RAPPORT RÉDIGÉ PAR // DR. LUA TYLER — DOCTEUR CHERCHEUSE UNISCA D8</span>
+  </div>
+  <div class="boot-text" id="bootText"><span class="boot-cursor"></span></div>
+</div>
+
+<script>
+(function(){
+  const lines=[
+    {text:"INITIALIZING SECURE TERMINAL — DISTRICT 8 // CITÉ 13...",cls:""},
+    {text:"CHARGEMENT DOSSIER : END-UNISCA-D8-LYTEA-001",cls:"orange"},
+    {text:"VÉRIFICATION ACCRÉDITATION...",cls:""},
+    {text:"NIVEAU ÉLEVÉ — ACCÈS ACCORDÉ.",cls:"orange"},
+    {text:"AUTEUR : DR. LUA TYLER // DOCTEUR CHERCHEUSE UNISCA D8",cls:"orange"},
+    {text:"OBJET : FIN DE LA RUCHE — DESTRUCTION LYTÉA — SACRIFICE DU JEUNE VOYAGEUR",cls:""},
+    {text:"─────────────────────────────────────────────────────",cls:"dim"},
+    {text:">>  STATUT LYTÉA       : BARRIÈRE FERMÉE — DISTRICT SÉCURISÉ",cls:"green"},
+    {text:">>  SACRIFICE VORT     : LE JEUNE VOYAGEUR — TOMBÉ AU COMBAT",cls:"green"},
+    {text:">>  PORTAILS XEN       : DISSOUS — GRAVITÉ RÉTABLIE",cls:"green"},
+    {text:">>  PERTES CIVILES     : NOMBREUSES — BILAN EN COURS",cls:"red"},
+    {text:">>  INTERROGATOIRE PC  : COERCITIF — SUIVI HIÉRARCHIQUE REQUIS",cls:"red"},
+    {text:">>  VIOLENCES          : UNITÉ PC — SALLE SANS CAMÉRA — SIGNALÉ",cls:"red"},
+    {text:"─────────────────────────────────────────────────────",cls:"dim"},
+    {text:"DOCUMENT CONFIDENTIEL — USAGE INTERNE UNISCA UNIQUEMENT.",cls:"orange"},
+    {text:"ACCÈS AUTORISÉ. PROCÉDER AVEC PRÉCAUTION.",cls:"orange"},
+  ];
+  const container=document.getElementById('bootText');
+  const cursor=container.querySelector('.boot-cursor');
+  let idx=0;
+  const colorMap={red:'var(--red-alert)',green:'var(--vort-green)',dim:'var(--text-dim)',orange:'var(--combine-orange)','':'inherit'};
+  function typeLine(line,cb){
+    const div=document.createElement('div');
+    div.style.color=colorMap[line.cls]||'inherit';
+    container.insertBefore(div,cursor);
+    let i=0;
+    const iv=setInterval(()=>{div.textContent=line.text.slice(0,++i);if(i>=line.text.length){clearInterval(iv);setTimeout(cb,120);}},18);
+  }
+  function nextLine(){
+    if(idx>=lines.length){setTimeout(()=>{document.getElementById('bootOverlay').classList.add('fade-out');},2200);return;}
+    typeLine(lines[idx++],nextLine);
+  }
+  setTimeout(nextLine,400);
+})();
+</script>
+
+<header class="c-header">
+  <div class="c-header-top">
+    <div class="c-logo">
+      <div class="c-logo-emblem">
+        <img src="unisca-logo.png" alt="UNISCA" style="height:40px;width:40px;object-fit:contain;border-radius:50%;filter:drop-shadow(0 0 6px rgba(180,55,55,0.4)) brightness(0.9);">
+      </div>
+      <div class="c-logo-text">
+        <div class="line1">DIVISION RECHERCHE BIOTIQUE // DISTRICT 8</div>
+        <div class="line2">CITÉ 13 — PARIS // ASSAUT FINAL — RUCHE LYTÉA — ÉGOÛTS SECTEUR CCH</div>
+      </div>
+    </div>
+    <div class="c-header-status">
+      <div class="status-item">OPÉRATEUR<br><span class="val">DR. LUA TYLER</span></div>
+      <div class="status-item">RÉFÉRENCE<br><span class="val">END-UNISCA-D8-LYTEA-001</span></div>
+      <div class="status-item">LYTÉA<br><span class="val-green">VAINCUE</span></div>
+      <div class="status-item">SACRIFICE<br><span class="val">JEUNE VOYAGEUR</span></div>
+      <div class="status-dot"></div>
+    </div>
+  </div>
+  <div class="c-header-title-bar">
+    <h1>RAPPORT D'INCIDENT // FIN DE LA RUCHE — DESTRUCTION DE LYTÉA — SACRIFICE DU JEUNE VOYAGEUR</h1>
+    <span class="sub">ASSAUT FINAL ÉGOÛTS D8 // RÉDACTION DR. LUA TYLER // LYTÉA REPOUSSÉE — BARRIÈRE FERMÉE</span>
+    <div class="clearance-badge">⚠ CONFIDENTIEL</div>
+  </div>
+</header>
+
+<div class="ticker">
+  <span class="ticker-inner">
+    CONFIDENTIEL &nbsp;·&nbsp; ACCÈS RESTREINT — UNISCA &amp; MANDATAIRE D8 UNIQUEMENT &nbsp;·&nbsp; END-UNISCA-D8-LYTEA-001 — FIN DE LA RUCHE — SACRIFICE DU JEUNE VOYAGEUR &nbsp;·&nbsp; PORTAILS XEN DISSOUS — GRAVITÉ RÉTABLIE &nbsp;·&nbsp; LE JEUNE VOYAGEUR — TOMBÉ AU COMBAT &nbsp;·&nbsp; TYLER INTERROGÉE PAR LA PROTECTION CIVILE — CIRCONSTANCES COERCITIVES &nbsp;·&nbsp; ACCORD NEG-UNISCA-D8-VORT-001 EXÉCUTÉ — MISSION ACCOMPLIE &nbsp;·&nbsp; NOMBREUSES PERTES CIVILES — INCENDIES — FUITES DE GAZ — DISTRICT EN RUINE &nbsp;·&nbsp; RANK-LEADERS PC — MENACE NOVA PROSPEKT — COMPTES À RENDRE À CITÉ 17 &nbsp;·&nbsp; PORTAILS FUSIONNANTS — NÉCROTIQUE 10M ÉVITÉ &nbsp;·&nbsp; TENTATIVE GRAMONT — RÉPONSE LÉTALE DE LYTÉA &nbsp;·&nbsp;
+    CONFIDENTIEL &nbsp;·&nbsp; ACCÈS RESTREINT — UNISCA &amp; MANDATAIRE D8 UNIQUEMENT &nbsp;·&nbsp; END-UNISCA-D8-LYTEA-001 — FIN DE LA RUCHE — SACRIFICE DU JEUNE VOYAGEUR &nbsp;·&nbsp; PORTAILS XEN DISSOUS — GRAVITÉ RÉTABLIE &nbsp;·&nbsp; LE JEUNE VOYAGEUR — TOMBÉ AU COMBAT &nbsp;·&nbsp; TYLER INTERROGÉE PAR LA PROTECTION CIVILE — CIRCONSTANCES COERCITIVES &nbsp;·&nbsp; ACCORD NEG-UNISCA-D8-VORT-001 EXÉCUTÉ — MISSION ACCOMPLIE &nbsp;·&nbsp; NOMBREUSES PERTES CIVILES — INCENDIES — FUITES DE GAZ — DISTRICT EN RUINE &nbsp;·&nbsp; RANK-LEADERS PC — MENACE NOVA PROSPEKT — COMPTES À RENDRE À CITÉ 17 &nbsp;·&nbsp; PORTAILS FUSIONNANTS — NÉCROTIQUE 10M ÉVITÉ &nbsp;·&nbsp; TENTATIVE GRAMONT — RÉPONSE LÉTALE DE LYTÉA &nbsp;·&nbsp;
+  </span>
+</div>
+
+<div class="c-layout">
+  <nav class="c-sidebar">
+    <div class="sidebar-label">Navigation</div>
+    <a href="#s00" class="sidebar-link orange"><span class="idx">00</span> Vue d'ensemble</a>
+    <a href="#s01" class="sidebar-link danger"><span class="idx">01</span> Les portails — L'après-midi</a>
+    <a href="#s02" class="sidebar-link danger"><span class="idx">02</span> Arrestation &amp; Interrogatoire</a>
+    <a href="#s02b" class="sidebar-link danger"><span class="idx">02B</span> Tentative Gramont — Échec</a>
+    <a href="#s03" class="sidebar-link"><span class="idx">03</span> Décision — L'expédition</a>
+    <a href="#s04" class="sidebar-link"><span class="idx">04</span> Descente dans les égoûts</a>
+    <a href="#s05" class="sidebar-link"><span class="idx">05</span> L'ouverture de la ruche</a>
+    <a href="#s06" class="sidebar-link vort"><span class="idx">06</span> Le Sacrifice du Jeune Voyageur</a>
+    <a href="#s07" class="sidebar-link vort"><span class="idx">07</span> Victoire — La barrière fermée</a>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-label">Retombées</div>
+    <a href="#s08" class="sidebar-link"><span class="idx">08</span> Retour en cité — Soins</a>
+    <a href="#s09" class="sidebar-link danger"><span class="idx">09</span> Nexus — Rank-leaders PC</a>
+    <a href="#s10" class="sidebar-link danger"><span class="idx">10</span> Violences — Salle sans caméra</a>
+    <a href="#s11" class="sidebar-link orange"><span class="idx">11</span> Conclusions</a>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-label">Métadonnées</div>
+    <div class="sidebar-meta">
+      <div class="meta-row">RÉFÉRENCE <span>END-UNISCA-D8-LYTEA-001</span></div>
+      <div class="meta-row">CLASSIF. <span>CONFIDENTIEL</span></div>
+      <div class="meta-row">LYTÉA <span class="val-green">VAINCUE</span></div>
+      <div class="meta-row">PORTAILS <span class="val-green">DISSOUS</span></div>
+      <div class="meta-row">SACRIFICE <span class="val-orange">JEUNE VOYAGEUR</span></div>
+      <div class="meta-row">RÉDACTEUR <span>DR. LUA TYLER</span></div>
+    </div>
+  </nav>
+
+  <main class="c-main">
+
+    <section id="s00" class="c-section">
+      <div class="section-header">
+        <div class="section-num">SEC.00</div>
+        <div>
+          <div class="section-title">Vue d'ensemble</div>
+          <div class="section-title-sub">SYNTHÈSE // OBJET DU RAPPORT // CONTEXTE GÉNÉRAL</div>
+        </div>
+      </div>
+      <div class="reader-note">
+        <div class="rn-title">// Note de transmission — Administration UNISCA &amp; Mandataire District 8 //</div>
+        Document rédigé par le Dr. <strong>Lua Tyler</strong>, docteur chercheuse UNISCA D8, à l'attention du Mandataire et de la hiérarchie UNISCA. Ce rapport couvre les événements du jour de l'assaut final contre la Ruche et son esprit, <strong>Lytéa</strong> — depuis l'apparition des premiers portails Xen en surface jusqu'au sacrifice du <strong>Jeune Voyageur</strong>, qui a scellé la barrière et mis fin à la menace. Ce document fait suite aux rapports <code>NEG-UNISCA-D8-LYTEA-001</code>, <code>NEG-UNISCA-D8-LYTEA-002</code> et <code>NEG-UNISCA-D8-VORT-001</code> — leur lecture préalable est indispensable pour comprendre les décisions prises ce jour-là. Ce que nous avons fait n'était pas arbitraire. C'était la seule issue possible.
+      </div>
+      <div class="data-grid">
+        <div class="data-cell dc-green">
+          <div class="dc-label">Statut Lytéa</div>
+          <div class="dc-value green">VAINCUE</div>
+          <div class="dc-sub">Barrière Xen fermée — district sécurisé</div>
+        </div>
+        <div class="data-cell dc-green">
+          <div class="dc-label">Portails Xen</div>
+          <div class="dc-value green">DISSOUS</div>
+          <div class="dc-sub">Gravité rétablie — bulle verte dissipée</div>
+        </div>
+        <div class="data-cell dc-vort">
+          <div class="dc-label">Sacrifice</div>
+          <div class="dc-value" style="font-size:10px;color:var(--vort-green)">JEUNE VOYAGEUR</div>
+          <div class="dc-sub">Vortigaunt allié — Tombé au combat</div>
+        </div>
+        <div class="data-cell dc-red">
+          <div class="dc-label">Pertes civiles</div>
+          <div class="dc-value red">ÉLEVÉES</div>
+          <div class="dc-sub">Incendies, fuites de gaz, nombreux morts</div>
+        </div>
+        <div class="data-cell">
+          <div class="dc-label">Accord exécuté</div>
+          <div class="dc-value" style="font-size:11px;">NEG-VORT-001</div>
+          <div class="dc-sub">Alliance anti-Lytéa — mission accomplie</div>
+        </div>
+        <div class="data-cell dc-red">
+          <div class="dc-label">Interrogatoire PC</div>
+          <div class="dc-value red" style="font-size:11px;">COERCITIF</div>
+          <div class="dc-sub">Unité de Protection Civile — sous pression</div>
+        </div>
+        <div class="data-cell">
+          <div class="dc-label">Rédacteur</div>
+          <div class="dc-value" style="font-size:11px;">DR. LUA TYLER</div>
+          <div class="dc-sub">Docteur Chercheuse — UNISCA D8</div>
+        </div>
+        <div class="data-cell">
+          <div class="dc-label">Coordinatrice</div>
+          <div class="dc-value" style="font-size:11px;">PRINCIPALE</div>
+          <div class="dc-sub">Contact vort, décision expédition, assaut</div>
+        </div>
+      </div>
+      <div class="panel" data-label="Déclaration personnelle">
+        <h3>La fin d'une longue bataille — et ses conséquences</h3>
+        <p>Je vais être directe : ce que vous lisez ici est le compte-rendu de la journée la plus difficile et la plus importante de ma carrière à l'UNISCA. Lytéa est repoussée. La barrière est fermée. Le district respire de nouveau. Et tout cela a un coût — un coût lourd, humain, difficile à quantifier dans un rapport.</p>
+        <p>J'ai pris des décisions ce jour-là que certains ont remises en question, et je l'accepte. Mais quiconque lirait les rapports précédents avec la même rigueur que moi comprendrait qu'il n'existait pas d'alternative. Pas une seule. Ce rapport est ma tentative la plus honnête de tout consigner, dans l'ordre, sans omission.</p>
+        <p>Je dis cela sans chercher à me mettre en valeur — les faits parlent d'eux-mêmes. C'est moi qui avais établi le contact avec le Jeune Voyageur. C'est moi qui détenais la fréquence radio, les clés de l'accord, la connaissance de Lytéa accumulée au fil des rapports précédents. Sans ce fil conducteur, sans quelqu'un pour coordonner ce contact au moment précis où le district s'effondrait, l'expédition n'aurait pas eu lieu. Et sans l'expédition, les portails auraient continué. La créature nécrotique de dix mètres aurait fini par passer. Lytéa aurait ouvert son passage Xen. Le district n'aurait pas survécu à cette nuit.</p>
+      </div>
+    </section>
+
+    <section id="s01" class="c-section">
+      <div class="section-header">
+        <div class="section-num danger">SEC.01</div>
+        <div>
+          <div class="section-title">Les portails — L'après-midi du chaos</div>
+          <div class="section-title-sub">PORTAILS XEN EN SURFACE // GRAVITÉ INVERSÉE // DÉBUT DE LA CRISE</div>
+        </div>
+      </div>
+      <p>Cela a commencé dans l'après-midi. Pas par une explosion, pas par un assaut — par une anomalie silencieuse et croissante que ceux qui n'avaient pas lu mes précédents rapports n'étaient tout simplement pas équipés pour interpréter.</p>
+      <div class="alert-box">
+        <div class="alert-icon">[!]</div>
+        <div class="alert-text"><strong>ALERTE DISTRICT :</strong> Des portails Xen ont commencé à se former çà et là dans le district, accompagnés de vibrations croissantes. Peu après, des civils ont été soulevés du sol — la gravité locale modifiée par les émissions de Lytéa. Une lueur verte envahissait progressivement l'horizon.</div>
+      </div>
+      <div class="phase-grid">
+        <div class="phase-card danger">
+          <div class="phase-num danger">PHASE A</div>
+          <div class="phase-name">Premières anomalies gravitationnelles</div>
+          <div class="phase-desc">Des portails Xen sporadiques apparaissent dans plusieurs zones du district. Des bruits sourds et répétitifs retentissent en provenance du sous-sol. Les habitants commencent à remarquer des objets flottants.</div>
+          <div class="phase-duration danger">GRAVITÉ : Perturbation progressive</div>
+        </div>
+        <div class="phase-card danger">
+          <div class="phase-num danger">PHASE B</div>
+          <div class="phase-name">Élévation des civils</div>
+          <div class="phase-desc">Des civils se retrouvent soulevés du sol, déstabilisés, paniqués. Le sol tremble par intervalles de plus en plus courts. La bulle verte dans le ciel s'étend. Lytéa drainait l'énergie du district pour ouvrir un passage Xen vers son monde.</div>
+          <div class="phase-duration danger">CIVILS : Nombreuses blessures — chutes</div>
+        </div>
+        <div class="phase-card">
+          <div class="phase-num">PHASE C</div>
+          <div class="phase-name">Arrestation de Tyler</div>
+          <div class="phase-desc">La Unité de Protection Civile intercepte Tyler et l'emmène en interrogatoire immédiat, cherchant une explication à ce qui se passe. La crise s'intensifie pendant la durée de l'interrogatoire.</div>
+          <div class="phase-duration">LIEU : Salle d'interrogatoire — district</div>
+        </div>
+        <div class="phase-card">
+          <div class="phase-num">PHASE D</div>
+          <div class="phase-name">Pic — Gravité à son minimum</div>
+          <div class="phase-desc">La gravité tombe à son niveau le plus bas. Des éléments légers s'envolent dans les rues. La panique est généralisée. Les alarmes de couvre-feu retentissent sur les haut-parleurs de la cité.</div>
+          <div class="phase-duration danger">GRAVITÉ : Chute extrême — civils soulevés du sol</div>
+        </div>
+      </div>
+      <div class="alert-box">
+        <div class="alert-icon">[!]</div>
+        <div class="alert-text"><strong>ÉVÉNEMENT CRITIQUE — PORTAILS FUSIONNANTS :</strong> Alors que notre groupe se rassemblait devant la librairie, place du cheval, trois portails ont simultanément commencé à se former à quelques mètres de nous. Deux portails verts et un portail rouge — de couleur et de nature distinctes — ont entamé un processus de fusion active, leur énergie se conjuguant pour former un vortex de plus en plus instable. Ce phénomène n'avait jamais été observé dans aucun des précédents rapports.</div>
+      </div>
+      <div class="field-sketch" data-caption="// Croquis terrain — Documentation visuelle — Dr. Lua Tyler // Trois portails en fusion — Place du cheval">
+        <img src="ruche img/trois portail cité.png" alt="Trois portails en fusion — deux verts, un rouge — Place du cheval">
+        <div class="sketch-footer">RÉALISÉ SUR PLACE // PORTAILS XEN EN COURS DE FUSION // DEUX VERTS — UN ROUGE // DISTRICT 8</div>
+      </div>
+      <div class="panel panel-red" data-label="Observation directe — Place du cheval">
+        <h3 class="red">La créature que nous n'avons pas laissé passer</h3>
+        <p>La fusion de ces trois portails n'était pas aléatoire. Lytéa tentait de faire passer quelque chose depuis Xen — une entité d'une envergure sans commune mesure avec les créatures nécrotiques habituelles. À mesure que les portails fusionnaient, une silhouette massive commençait à se matérialiser dans le vortex : une créature nécrotique d'une dizaine de mètres, dont la simple émergence aurait suffi à réduire plusieurs blocs du district à feu et à sang en quelques minutes.</p>
+        <p>Nous l'avons vue. Nous avons compris immédiatement ce que cela signifiait. C'est précisément à ce moment-là que l'urgence absolue s'est cristallisée — il n'y avait plus de marge. Si cette entité passait le portail, aucune force présente dans le district ce jour-là n'aurait pu la contenir. Le Jeune Voyageur était notre seule chance d'agir avant que cela ne se produise.</p>
+      </div>
+      <div class="panel panel-red" data-label="Analyse — Lytéa">
+        <h3 class="red">Ce que ces portails signifiaient</h3>
+        <p>Pour quiconque a lu le rapport <code>NEG-UNISCA-D8-LYTEA-001</code>, la signification de ces portails est limpide : Lytéa, consciente de notre intention de la détruire, tentait de fuir. En drainant l'énergie électrique et tellurique du district, elle cherchait à ouvrir un passage Xen vers son monde d'origine — exactement comme lors des Événements de 2004. Elle savait que nous allions agir. Elle a voulu partir avant que nous puissions l'en empêcher.</p>
+        <p>Ce n'était pas une attaque sans raison. C'était une réponse à notre préparation. La preuve que les travaux menés par l'UNISCA avaient atteint leurs oreilles — ou leur esprit.</p>
+      </div>
+    </section>
+
+    <section id="s02" class="c-section">
+      <div class="section-header">
+        <div class="section-num danger">SEC.02</div>
+        <div>
+          <div class="section-title">Arrestation &amp; Interrogatoire par la Protection Civile</div>
+          <div class="section-title-sub">COERCITION // RÉVÉLATION COMPLÈTE // PRESSION EXTRÊME</div>
+        </div>
+      </div>
+      <p>J'ai été interceptée et escortée dans une salle d'interrogatoire sans préavis. Une Unité de Protection Civile m'a soumise à un interrogatoire sous pression au moment précis où le district s'effondrait autour de nous.</p>
+      <div class="alert-box">
+        <div class="alert-icon">[!]</div>
+        <div class="alert-text"><strong>MÉTHODES COERCITIVES :</strong> L'officier a employé d'emblée des menaces physiques explicites : <em>"You will do well to answer my questions, or you will be BEAT."</em> L'interrogatoire s'est déroulé sous la menace d'une matraque, avec des hurlements répétés, alors que le sol tremblait sous nos pieds. Ces conditions ne correspondent pas à un protocole d'interrogatoire standard.</div>
+      </div>
+      <div class="cite-terminal">
+        <div class="cite-terminal-head">
+          <div class="cite-terminal-title">Séquence d'interrogatoire — Révélation de la menace Lytéa</div>
+          <div class="cite-terminal-tag">INTERROGATOIRE PC // SALLE SÉCURISÉE</div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev red">&gt;</div>
+          <div class="cite-terminal-text"><span class="lab">Unité PC :</span> <em>"What is the proxy?! You will do well to answer my questions, or you will be BEAT."</em></div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev">&gt;</div>
+          <div class="cite-terminal-text"><span class="lab orange">Dr. Tyler :</span> <em>"Vous avez besoin de moi, sans moi c'est la cité entière qui crève. Je vais vous dire ce que vous voulez savoir — mais arrêtez de hurler, vous me faites peur."</em></div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev">&gt;</div>
+          <div class="cite-terminal-text"><span class="lab orange">Dr. Tyler :</span> <em>"Ce jeune voyageur, c'est un vortigaunt — une connaissance rencontrée dans les égoûts. C'est notre clé, notre sauveur, celui qui va mettre fin à la colonie sous nos pieds. Les vortigaunts et Lytéa se battent depuis des milliers d'années. J'ai établi un contact pour lui proposer un marché : la vie sauve et la tranquillité, contre la destruction de cette ruche."</em></div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev red">&gt;</div>
+          <div class="cite-terminal-text"><span class="lab">Unité PC :</span> <em>"Have you no hope for what the Union can do?!"</em></div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev">&gt;</div>
+          <div class="cite-terminal-text"><span class="lab orange">Dr. Tyler :</span> <em>"L'union ? Jusqu'à maintenant vous avez été incapable de répondre à nos demandes. Les synthétiques, vous — la ruche n'en ferait qu'une bouchée. Vous ne comprenez pas les enjeux. Elle pourrait nous faire exploser la tête à tous en même temps si elle le souhaitait."</em></div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev">&gt;</div>
+          <div class="cite-terminal-text"><span class="lab orange">Dr. Tyler :</span> <em>"Il n'attend rien en retour si ce n'est la paix. Ses conditions sont simples : il souhaite une armée à ses côtés, et moi pour le conduire directement à la Ruche — sur les rails."</em></div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev red">&gt;</div>
+          <div class="cite-terminal-text"><span class="lab">Unité PC :</span> <em>"Is Lytea the one doing the portals?"</em></div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev">&gt;</div>
+          <div class="cite-terminal-text"><span class="lab orange">Dr. Tyler :</span> <em>"Oui. C'est elle, Lytéa, la Ruche, l'esprit de la ruche. Elle est en train de faire son possible pour s'échapper — elle sait que nous allons agir."</em></div>
+        </div>
+      </div>
+      <div class="panel" data-label="Note — Contexte de l'interrogatoire">
+        <h3>Pourquoi j'ai tout révélé</h3>
+        <p>La question mérite d'être posée : pourquoi ai-je divulgué l'intégralité de l'opération à un officier PC sans y être légalement contrainte ? La réponse est simple — nous étions à quelques minutes de catastrophe totale. Le sol tremblait, les civils flottaient dans les rues au-dessus de nous. Chaque seconde comptait.</p>
+        <p>J'ai révélé ce que je savais parce que j'avais besoin de leur coopération immédiate. J'avais besoin d'une escorte armée, d'accès aux égoûts, de filtres, d'armes. Sans la Protection Civile à mes côtés, l'expédition était impossible à mener dans le temps imparti. J'ai fait ce choix en pleine conscience. Je le ferais encore.</p>
+      </div>
+      <div class="info-box">
+        <div class="info-icon">[i]</div>
+        <div class="info-text">L'officier PC a finalement coopéré pleinement une fois convaincu — il a coordonné le rassemblement des forces, fourni l'équipement, et a lui-même participé à l'assaut dans les égoûts. Son engagement sur le terrain a été exemplaire, malgré les circonstances initiales de l'interrogatoire.</div>
+      </div>
+    </section>
+
+    <section id="s02b" class="c-section">
+      <div class="section-header">
+        <div class="section-num danger">SEC.02B</div>
+        <div>
+          <div class="section-title">La tentative de négociation — Gramont &amp; les Conscrits</div>
+          <div class="section-title-sub">APPROCHE DIPLOMATIQUE // RÉPONSE DE LYTÉA // AUCUNE ALTERNATIVE</div>
+        </div>
+      </div>
+      <p>Avant que l'expédition ne soit organisée, et pendant que j'étais encore retenue en interrogatoire, une tentative avait été menée pour trouver une issue pacifique. Je tiens à en consigner le détail ici, car elle constitue la preuve définitive qu'il n'existait aucune autre voie que l'assaut.</p>
+      <div class="panel" data-label="Tentative diplomatique">
+        <h3>Gramont et les conscrits descendent en premier</h3>
+        <p>Le Dr. <strong>Henri de Gramont</strong>, accompagné d'un groupe de conscrits, s'est rendu dans les égoûts dans l'intention d'établir un contact avec Lytéa — ou du moins de tenter une approche de ses manifestations — afin d'ouvrir une voie de dialogue ou d'y évaluer la situation de visu. C'était une démarche légitime et courageuse.</p>
+        <p>Lytéa a répondu en envoyant des créatures nécrotiques. Pas une, pas deux — des entités de grande taille, de l'ordre de dix mètres, surgies directement des tunnels et des parois de la Ruche. Le message était sans ambiguïté : il n'y aurait pas de négociation. Lytéa ne souhaitait pas parler. Elle souhaitait éliminer quiconque s'approchait de son territoire.</p>
+      </div>
+      <div class="field-sketch" data-caption="// Croquis terrain — Documentation visuelle — Dr. Lua Tyler // Créature nécrotique — Envoyée par Lytéa en réponse à l'approche Gramont">
+        <img src="ruche img/nécrotique grand.png" alt="Créature nécrotique de grande taille — envoyée par Lytéa">
+        <div class="sketch-footer">ESTIMATION TAILLE : ~10 MÈTRES // CRÉATURE ENVOYÉE PAR LYTÉA — RÉPONSE À L'APPROCHE DIPLOMATIQUE // NE PAS ENGAGER SANS SOUTIEN LOURD</div>
+      </div>
+      <div class="alert-box">
+        <div class="alert-icon">[!]</div>
+        <div class="alert-text"><strong>CONCLUSION OPÉRATIONNELLE :</strong> La tentative de Gramont et des conscrits a définitivement fermé la porte à toute alternative pacifique. Lytéa a répondu à une approche non-armée par une attaque directe de créatures létales. Ce comportement, ajouté aux portails en surface et à la gravité inversée, a rendu l'assaut non plus seulement souhaitable — mais indispensable et immédiat.</div>
+      </div>
+      <div class="panel panel-red" data-label="Note de Tyler">
+        <h3 class="red">Pourquoi cette tentative rendait l'assaut inévitable</h3>
+        <p>Certains ont reproché après coup que l'assaut avec le Jeune Voyageur n'avait pas été suffisamment préparé ou approuvé. Je leur réponds ceci : une tentative de dialogue avait eu lieu. Elle s'est soldée par une attaque. Nous avions épuisé la voie diplomatique avant même d'organiser l'expédition finale.</p>
+        <p>La question n'était plus "faut-il agir ?" — elle était "combien de temps nous reste-t-il avant que la cité entière soit hors de portée ?" La réponse était : peu. Très peu.</p>
+      </div>
+    </section>
+
+    <section id="s03" class="c-section">
+      <div class="section-header">
+        <div class="section-num">SEC.03</div>
+        <div>
+          <div class="section-title">Décision — Organisation de l'expédition d'urgence</div>
+          <div class="section-title-sub">RASSEMBLEMENT DES FORCES // ÉQUIPEMENT // CONTACT VORTIGAUNT</div>
+        </div>
+      </div>
+      <p>La gravité atteignait son niveau le plus critique. J'ai demandé à être détachée et relâchée afin d'agir. L'officier PC a accepté et la coordination s'est mise en place en quelques minutes.</p>
+      <div class="panel" data-label="Coordination terrain">
+        <h3>Le rassemblement devant la librairie</h3>
+        <p>Rendez-vous fixé devant la librairie, place du cheval. Le Dr. <strong>Raphaël Mützenberg</strong> a rejoint le groupe avec les tenues de protection et les filtres nécessaires. La force comprenait : l'officier PC, une unité de la Conscription (plusieurs conscripts armés), des membres UNISCA dont <strong>Ling Zhu</strong>, et moi-même.</p>
+        <p>Pendant que l'équipe se formait, j'ai contacté le Jeune Voyageur sur la fréquence établie lors de l'accord <code>NEG-UNISCA-D8-VORT-001</code> — Canal 1, QT 4. Ce canal radio était notre seul lien avec lui. C'est moi qui avais établi cette fréquence lors de la négociation précédente. Sans ce contact préalable, toute l'opération aurait été impossible.</p>
+      </div>
+      <div class="cite-terminal">
+        <div class="cite-terminal-head">
+          <div class="cite-terminal-title">Premier contact radio — Activation de l'accord</div>
+          <div class="cite-terminal-tag">CANAL 1 / QT 4 — FRÉQUENCE NEG-VORT-001</div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev">&gt;</div>
+          <div class="cite-terminal-text"><span class="lab orange">Tyler [radio] :</span> <em>"Jeune Voyageur — c'est maintenant. On arrive dans les égoûts. Viens vite, des guerriers seront ici."</em></div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev vort">&gt;</div>
+          <div class="cite-terminal-text"><span class="lab vort-name">Jeune Voyageur [radio] :</span> <em>"Nous arrivons."</em></div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev">&gt;</div>
+          <div class="cite-terminal-text"><span class="lab orange">Tyler [radio] :</span> <em>"L'endroit de la ruche, Lytéa — on arrive dans quelques minutes."</em></div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev vort">&gt;</div>
+          <div class="cite-terminal-text"><span class="lab vort-name">Jeune Voyageur [radio] :</span> <em>"Nous avons besoin d'un lieu."</em></div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev">&gt;</div>
+          <div class="cite-terminal-text"><span class="lab orange">Tyler [radio] :</span> <em>"Rends-toi sur les rails du train."</em></div>
+        </div>
+      </div>
+      <div class="team-grid">
+        <div class="team-card">
+          <div class="team-avatar">LT</div>
+          <div><div class="team-name">Dr. Lua Tyler</div><div class="team-role hero">COORDINATRICE PRINCIPALE — CONTACT VORT<br>Responsable décision — lien Jeune Voyageur</div></div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar pc">PC</div>
+          <div><div class="team-name">Unité de Protection Civile</div><div class="team-role">COMMANDANT TERRAIN — ESCORTE ARMÉE<br>Coordination radio — forces conscription</div></div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar mil">RM</div>
+          <div><div class="team-name">Dr. Raphaël Mützenberg</div><div class="team-role">MÉDECIN — UNISCA D8<br>Tenues protection — filtres — soins terrain</div></div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar mil">LZ</div>
+          <div><div class="team-name">Ling Zhu</div><div class="team-role">CONSCRIT — COUVERTURE ARMÉE<br>Protection équipe — flanc gauche</div></div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar mil">DP</div>
+          <div><div class="team-name">Dimitri Petrenko</div><div class="team-role">CONSCRIT — LIGNE DE FEU<br>Soutien offensif — couloir de la ruche</div></div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar vort">∿</div>
+          <div><div class="team-name">Le Jeune Voyageur</div><div class="team-role vort">VORTIGAUNT — ALLIÉ PRINCIPAL<br>Porteur de l'accord NEG-VORT-001 — Champion</div></div>
+        </div>
+      </div>
+      <div class="field-sketch" data-caption="// Croquis terrain — Documentation visuelle — Dr. Lua Tyler // Le Jeune Voyageur — Vortigaunt allié">
+        <img src="ruche img/jeune voyageur.png" alt="Le Jeune Voyageur — Vortigaunt">
+        <div class="sketch-footer">SUJET : LE JEUNE VOYAGEUR — VORTIGAUNT NON-RESTREINT // ALLIÉ — ACCORD NEG-UNISCA-D8-VORT-001 // RÉALISÉ DE MÉMOIRE APRÈS CONTACT</div>
+      </div>
+    </section>
+
+    <section id="s04" class="c-section">
+      <div class="section-header">
+        <div class="section-num danger">SEC.04</div>
+        <div>
+          <div class="section-title">Descente dans les égoûts</div>
+          <div class="section-title-sub">GAZ NÉCROTIQUEQUE // FILTRES // PROGRESSION SOUS PRESSION</div>
+        </div>
+      </div>
+      <p>Nous sommes descendus par l'ascenseur habituel. L'air était immédiatement reconnaissable — les égoûts empestaient encore plus qu'à l'accoutumée, une odeur qui indique une activité biologique intense de la Ruche.</p>
+      <div class="alert-box">
+        <div class="alert-icon">[!]</div>
+        <div class="alert-text"><strong>ATMOSPHÈRE TOXIQUE :</strong> Dès la descente, le système d'alerte de nos combinaisons signalait des concentrations élevées de gaz nécrotique. Les filtres ont commencé à se détériorer rapidement. Les équipements n'étaient pas dimensionnés pour une immersion prolongée dans cet environnement.</div>
+      </div>
+      <div class="phase-grid">
+        <div class="phase-card">
+          <div class="phase-num">PHASE 01</div>
+          <div class="phase-name">Descente &amp; Rails</div>
+          <div class="phase-desc">Arrivée sur les rails du train souterrain. Point de rendez-vous confirmé par radio avec le Jeune Voyageur. Attention au train signalée à toute l'équipe par Tyler. Zhu confirme la position sur radio tactique.</div>
+          <div class="phase-duration">POINT DE RDVZ : Rails — sous le district</div>
+        </div>
+        <div class="phase-card danger">
+          <div class="phase-num danger">PHASE 02</div>
+          <div class="phase-name">Filtres en détérioration</div>
+          <div class="phase-desc">Les filtres commencent à se détériorer à mi-parcours. Mützenberg et Zhu alertent l'équipe. Certains membres sans filtres de rechange. La progression devient une course contre la montre autant qu'une opération tactique.</div>
+          <div class="phase-duration danger">FILTRES : Durée réduite — urgence</div>
+        </div>
+        <div class="phase-card">
+          <div class="phase-num">PHASE 03</div>
+          <div class="phase-name">Jonction avec le Vortigaunt</div>
+          <div class="phase-desc">Le Jeune Voyageur nous rejoint sur les rails. Tension initiale de l'escorte — ordre formel de ne pas tirer donné par Tyler et relayé par Zhu. Jonction réussie sans incident.</div>
+          <div class="phase-duration">VORT REJOINT : Rails — zone C</div>
+        </div>
+        <div class="phase-card">
+          <div class="phase-num">PHASE 04</div>
+          <div class="phase-name">Approche de la porte</div>
+          <div class="phase-desc">Tyler guide l'équipe jusqu'à la porte blindée métallique menant à la Ruche. Mützenberg active l'appareil spécial UNISCA — le seul capable d'ouvrir cette porte. Porte identifiée lors des précédentes expéditions.</div>
+          <div class="phase-duration">PORTE : Blindée — verrou UNISCA requis</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="s05" class="c-section">
+      <div class="section-header">
+        <div class="section-num">SEC.05</div>
+        <div>
+          <div class="section-title">L'ouverture de la Ruche</div>
+          <div class="section-title-sub">ACTIVATION APPAREIL UNISCA // ENTRÉE JEUNE VOYAGEUR // COMBAT INTÉRIEUR</div>
+        </div>
+      </div>
+      <p>C'est devant cette porte que j'ai prononcé les mots qui comptaient le plus. Le Jeune Voyageur attendait. L'équipe était en position. Mützenberg avait l'appareil en main.</p>
+      <div class="field-sketch" data-caption="// Croquis terrain — Documentation visuelle — Dr. Lua Tyler // Intérieur de la Ruche — Vue depuis l'entrée après ouverture">
+        <img src="ruche img/ruche ouverte.png" alt="Intérieur de la Ruche — vue depuis l'entrée">
+        <div class="sketch-footer">SECTEUR : RUCHE LYTÉA — ÉGOÛTS CCH // VUE DEPUIS L'ENTRÉE POST-OUVERTURE // PORTE BLINDÉE UNISCA ACTIVÉE PAR MÜTZENBERG</div>
+      </div>
+      <div class="cite-terminal">
+        <div class="cite-terminal-head">
+          <div class="cite-terminal-title">Séquence — Ouverture de la porte &amp; Envoi du Vortigaunt</div>
+          <div class="cite-terminal-tag">OPÉRATION FINALE — SECTEUR RUCHE</div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev">&gt;</div>
+          <div class="cite-terminal-text"><span class="lab orange">Tyler :</span> <em>"C'est derrière cette porte qu'elle se trouve, Jeune Voyageur."</em></div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev vort">&gt;</div>
+          <div class="cite-terminal-text"><span class="lab vort-name">Jeune Voyageur :</span> <em>"Ouvrez donc."</em></div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev">&gt;</div>
+          <div class="cite-terminal-text"><span class="lab orange">Tyler :</span> <em>"Mutz. Ouvrez."</em></div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev">&gt;</div>
+          <div class="cite-terminal-text"><span class="lab orange">Tyler :</span> <em>"Ce sont des guerriers passifs, Jeune Voyageur. Il ne vous feront aucun mal."</em> [s'adressant à l'escorte]</div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev vort">&gt;</div>
+          <div class="cite-terminal-text"><span class="lab vort-name">Jeune Voyageur :</span> <em>"Que devons-nous savoir une fois à l'intérieur ?"</em></div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev">&gt;</div>
+          <div class="cite-terminal-text"><span class="lab orange">Tyler :</span> <em>"Vous devez la détruire. Mettre fin à cette menace, l'éradiquer. Vous avez parlé à la Vortessence. <span style="background:rgba(0,0,0,0.7);color:#555;font-style:normal;letter-spacing:0.05em;padding:1px 6px;border:1px solid #333;">[INFORMATION SUPPRIMÉE]</span> Nous serons avec vous pour la détruire."</em></div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev">&gt;</div>
+          <div class="cite-terminal-text"><span class="lab orange">Tyler :</span> <em>"Vous êtes le champion capable de mettre un terme à cette folie, Jeune Voyageur."</em></div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev vort">&gt;</div>
+          <div class="cite-terminal-text"><span class="lab vort-name">Jeune Voyageur :</span> <em>"Nous allons faire notre possible pour régler ce problème. Laissez-nous avant l'isolé — sinon elle va s'enfuir."</em></div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev vort">&gt;</div>
+          <div class="cite-terminal-text"><span class="lab vort-name">Jeune Voyageur :</span> <em>"Weeeeeeeeeeah-uh—"</em> [cri de guerre vortigaunt — entrée dans la Ruche]</div>
+        </div>
+      </div>
+      <div class="panel panel-vort" data-label="Observation — La Vortessence">
+        <h3 class="vort">"Nous sommes la Vortessence et elle est nous."</h3>
+        <p>Avant d'entrer, je lui avais demandé si la Vortessence lui avait autorisé ce combat. Sa réponse reste gravée dans ma mémoire : <em>"Nous n'avons pas besoin d'autorisation. Nous sommes la Vortessence et elle est nous."</em> Cette phrase résume mieux que n'importe quelle analyse le lien indéfectible qui unit les Vortigaunts à leur flux collectif. Ce n'était pas de l'arrogance. C'était une vérité fondamentale sur ce qu'ils sont.</p>
+      </div>
+      <p>Une fois la porte ouverte, le reste de l'équipe a couvert l'entrée. Des Nécromorphes et créatures de la Ruche ont émergé — combat de défense déclenché. Mützenberg et moi nous sommes positionnés à couvert pendant que la ligne de conscription absorbait le choc.</p>
+    </section>
+
+    <section id="s06" class="c-section">
+      <div class="section-header">
+        <div class="section-num vort">SEC.06</div>
+        <div>
+          <div class="section-title">Le Sacrifice du Jeune Voyageur</div>
+          <div class="section-title-sub">RITUEL FINAL // CRISTAL DÉTRUIT // MORT HÉROÏQUE</div>
+        </div>
+      </div>
+      <div class="sacrifice-banner">
+        <div class="sb-title">LE JEUNE VOYAGEUR</div>
+        <div class="sb-sub">VORTIGAUNT — TOMBÉ AU COMBAT</div>
+        <div class="sb-quote">"Sha'Vorr contribuera au sacrifice commun. For freedom!"</div>
+        <div class="sb-sub">— Dernières paroles transmises par radio, Canal 1 / QT 4</div>
+      </div>
+      <p>Depuis l'entrée des rails, j'ai maintenu le contact radio avec Sha'Vorr pendant toute la durée de son combat dans la Ruche. Ce qui suit est la retranscription fidèle de ses dernières communications.</p>
+      <div class="cite-terminal">
+        <div class="cite-terminal-head">
+          <div class="cite-terminal-title">Dernières transmissions radio — Sha'Vorr</div>
+          <div class="cite-terminal-tag">CANAL 1 / QT 4 — OPÉRATION FINALE</div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev vort">&gt;</div>
+          <div class="cite-terminal-text"><span class="lab vort-name">Jeune Voyageur [radio] :</span> <em>"Chung... Corrrrl... Malae."</em> [chant rituel — langue vortigaunt]</div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev vort">&gt;</div>
+          <div class="cite-terminal-text"><span class="lab vort-name">Jeune Voyageur [radio] :</span> <em>"Le passage va s'ouvrir."</em></div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev vort">&gt;</div>
+          <div class="cite-terminal-text"><span class="lab vort-name">Jeune Voyageur [radio] :</span> <em>"Il y a une continuité. Avancez."</em></div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev vort">&gt;</div>
+          <div class="cite-terminal-text"><span class="lab vort-name">Jeune Voyageur [radio] :</span> <em>"Détruisez le cristal."</em></div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev">&gt;</div>
+          <div class="cite-terminal-text"><span class="lab orange">Tyler [radio] :</span> <em>"Jeune Voyageur, nous devons reculer — le gaz est trop puissant. Nous sommes sur les rails."</em></div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev vort">&gt;</div>
+          <div class="cite-terminal-text"><span class="lab vort-name">Jeune Voyageur [radio] :</span> <em>"Reçu. Nous continuons. Il y a tant de créatures — Shaaaaa !"</em></div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev vort">&gt;</div>
+          <div class="cite-terminal-text"><span class="lab vort-name">Jeune Voyageur [radio] :</span> <em>"Nous avons trouvé."</em></div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev vort">&gt;</div>
+          <div class="cite-terminal-text"><span class="lab vort-name">Jeune Voyageur [radio] :</span> <em>"Cristal détruit !"</em></div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev vort">&gt;</div>
+          <div class="cite-terminal-text"><span class="lab vort-name">Jeune Voyageur [radio] :</span> <em>"Sha'Vorr contribuera au sacrifice commun ! To our glorious end ! For freedom !"</em></div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev vort">&gt;</div>
+          <div class="cite-terminal-text"><span class="lab vort-name">Jeune Voyageur [radio] :</span> <em>*Bruits de lutte et de Vortbeam — intense — puis silence.*</em></div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev">&gt;</div>
+          <div class="cite-terminal-text"><span class="lab orange">Tyler [radio] :</span> <em>"Merci pour tout. Vous serez reconnu, vu, et rappelé comme le plus grand guerrier que cette cité ait pu connaître. Votre sacrifice ne sera pas vain."</em></div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev vort">&gt;</div>
+          <div class="cite-terminal-text"><span class="lab vort-name">Jeune Voyageur [radio — dernières paroles] :</span> <em>"No fear, we will put you on the right road."</em></div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev vort">&gt;</div>
+          <div class="cite-terminal-text"><span class="lab vort-name">Jeune Voyageur [radio — ultime transmission] :</span> <em>"Libre. Nous sommes libre. L'ennemi est vaincu... Elle n'est pas vaincue, mais nous avons fermé la barrière qui la menait à votre monde... Nous continuerons de la combattre si un jour elle revient... Adieu."</em></div>
+        </div>
+      </div>
+      <div class="panel panel-vort" data-label="Analyse — Le Jeune Voyageur">
+        <h3 class="vort">Ce que son sacrifice signifie</h3>
+        <p>Le Jeune Voyageur était venu à nous sans rien demander en retour, si ce n'est la paix. Pas de rémunération, pas de garantie de survie, pas d'escorte jusqu'à sa famille. Il est entré seul dans une Ruche de dix mètres peuplée de créatures voraces, avec pour seule arme sa Vortessence et sa conviction.</p>
+        <p>Sa mort n'est pas une tragédie de plus dans une longue liste. C'est un acte de volonté absolue. Il savait ce qui l'attendait. Il a choisi d'y aller quand même. La Vortessence ne fait pas de distinction entre lui et elle — ils sont un. Son sacrifice était, au sens le plus littéral, un sacrifice collectif : il a offert sa vie pour la sienne, pour la nôtre, pour un monde qu'il ne verrait jamais.</p>
+        <p>Je l'ai entendu mourir par radio. Je n'ai pas pleuré — pas sur le moment. J'avais encore trop à faire. Mais je n'ai pas oublié non plus.</p>
+      </div>
+    </section>
+
+    <section id="s07" class="c-section">
+      <div class="section-header">
+        <div class="section-num vort">SEC.07</div>
+        <div>
+          <div class="section-title">Victoire — La barrière fermée</div>
+          <div class="section-title-sub">PORTAILS DISSOUS // GRAVITÉ RÉTABLIE // SILENCE APRÈS LA TEMPÊTE</div>
+        </div>
+      </div>
+      <div class="success-box">
+        <div class="success-icon">[✓]</div>
+        <div class="success-text"><strong>MISSION ACCOMPLIE :</strong> Soudain, la bulle verte dans le ciel s'est dissoute et a disparu. Depuis cet instant, le calme est revenu. Aucune créature ne s'est plus manifestée par les portails. La gravité s'est normalisée progressivement. La barrière reliant la Ruche au monde de Lytéa a été fermée par le sacrifice du Jeune Voyageur.</div>
+      </div>
+      <div class="cite-terminal">
+        <div class="cite-terminal-head">
+          <div class="cite-terminal-title">Annonce de la victoire — Sur les rails</div>
+          <div class="cite-terminal-tag">SECTEUR ÉGOÛTS — RUCHE — ISSUE FINALE</div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev vort">&gt;</div>
+          <div class="cite-terminal-text"><span class="lab vort-name">Jeune Voyageur [radio — dernier message] :</span> <em>"LIBRE NOUS SOMMES LIBRE, L'ENNEMI EST VAINCU. Elle n'est pas vaincue, mais nous avons fermé la barrière qui la menait à votre monde. Nous continuerons de la combattre si un jour elle revient. Adieu."</em></div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev">&gt;</div>
+          <div class="cite-terminal-text"><span class="lab orange">Tyler [aux troupes] :</span> <em>"La barrière est fermée. Lytéa est vaincue. La Ruche est vaincue !"</em></div>
+        </div>
+      </div>
+      <div class="data-grid">
+        <div class="data-cell dc-green">
+          <div class="dc-label">Bulle verte</div>
+          <div class="dc-value green">DISSOUTE</div>
+          <div class="dc-sub">Disparue du ciel au moment du sacrifice</div>
+        </div>
+        <div class="data-cell dc-green">
+          <div class="dc-label">Portails actifs</div>
+          <div class="dc-value green">ZÉRO</div>
+          <div class="dc-sub">Aucune nouvelle apparition post-sacrifice</div>
+        </div>
+        <div class="data-cell dc-green">
+          <div class="dc-label">Gravité</div>
+          <div class="dc-value green">NORMALE</div>
+          <div class="dc-sub">Rétablie progressivement</div>
+        </div>
+        <div class="data-cell dc-red">
+          <div class="dc-label">Lytéa</div>
+          <div class="dc-value red" style="font-size:11px;">REPOUSSÉE</div>
+          <div class="dc-sub">Barrière fermée — non détruite — à surveiller</div>
+        </div>
+      </div>
+      <div class="panel panel-red" data-label="Avertissement important">
+        <h3 class="red">Lytéa n'est pas morte</h3>
+        <p>Il faut être précis sur un point que les transmissions du Jeune Voyageur ont elles-mêmes clarifié : Lytéa n'est pas détruite. La barrière qui lui permettait d'accéder à notre monde a été fermée, et le cristal qui alimentait ses portails a été brisé. Mais son existence dans sa dimension d'origine reste entière.</p>
+        <p>Le Jeune Voyageur a expressément indiqué que son peuple continuerait à la combattre si elle revenait. Cela implique une surveillance continue. Les rapports de la série LYTEA ne doivent pas être considérés comme clos — ils doivent être maintenus actifs dans les archives opérationnelles de l'UNISCA jusqu'à preuve définitive de sa destruction ou de son incapacité permanente à agir.</p>
+      </div>
+    </section>
+
+    <section id="s08" class="c-section">
+      <div class="section-header">
+        <div class="section-num">SEC.08</div>
+        <div>
+          <div class="section-title">Retour en cité — Soins aux civils</div>
+          <div class="section-title-sub">ÉTAT DU DISTRICT // INCENDIES // TRIAGE MÉDICAL</div>
+        </div>
+      </div>
+      <p>Le retour en surface a révélé l'étendue des dégâts. Le district portait les cicatrices d'une catastrophe à grande échelle — fuites de gaz, incendies, structures partiellement effondrées, nombreux blessés.</p>
+      <div class="alert-box">
+        <div class="alert-icon">[!]</div>
+        <div class="alert-text"><strong>BILAN CITÉ :</strong> Incendies multiples actifs au retour en surface. Fuites de gaz dans plusieurs quartiers. Civils blessés par les chutes dues à la gravité inversée. Corps de civils victimes des créatures issues des portails. Infrastructure endommagée. État général : district en ruine partielle.</div>
+      </div>
+      <div class="field-sketch" data-caption="// Croquis terrain — Documentation visuelle — Dr. Lua Tyler // District 8 — État post-opération">
+        <img src="ruche img/district après destruction ruche.png" alt="District 8 — État après la destruction de la Ruche">
+        <div class="sketch-footer">DISTRICT 8 — POST-OPÉRATION // INCENDIES — DÉBRIS — INFRASTRUCTURE ENDOMMAGÉE // RÉALISÉ AU RETOUR EN SURFACE</div>
+      </div>
+      <div class="panel" data-label="Action médicale">
+        <h3>Les soins au retour</h3>
+        <p>Dès le retour en surface, j'ai administré les premiers soins aux civils que nous avons croisés. Mützenberg et moi avons effectué un triage rapide sur les blessés accessibles — bandages, antidouleurs, stabilisation. La clinique UNISCA a été mobilisée en urgence.</p>
+        <p>Ces pertes — les morts, les blessés, les destructions — étaient inévitables. Pas parce que nous n'avons pas agi assez vite. Mais parce que nous avons agi au dernier moment possible, avec les ressources disponibles. Si nous n'avions pas agi ce jour-là, le bilan aurait été d'un autre ordre de grandeur. Lytéa ouvrant un portail Xen complet vers son monde — cela aurait signifié des milliers de morts, pas des dizaines.</p>
+        <p>Je maintiens cette évaluation. C'était la seule solution.</p>
+      </div>
+    </section>
+
+    <section id="s09" class="c-section">
+      <div class="section-header">
+        <div class="section-num danger">SEC.09</div>
+        <div>
+          <div class="section-title">Confrontation au Nexus — Rank-Leaders PC</div>
+          <div class="section-title-sub">DÉBRIEFING POST-OPÉRATION // MENACES // RAPPEL DU CONSEIL</div>
+        </div>
+      </div>
+      <p>Dans les heures suivant l'opération, j'ai été convoquée au Nexus pour un débriefing avec les rank-leaders de la Protection Civile. Ce qui s'est passé dans cette salle mérite d'être consigné dans son intégralité — pour le dossier, pour la hiérarchie, et pour quiconque lira ce rapport.</p>
+      <div class="panel panel-red" data-label="Débriefing Nexus">
+        <h3 class="red">Ce qui m'a été dit au Nexus</h3>
+        <p>Les rank-leaders ont immédiatement fixé le ton : l'opération était qualifiée de <strong>suicide</strong>. S'allier à un biotic pour atteindre la Ruche — c'était <strong>impensable</strong>, un acte qu'ils ont décrit comme une aberration de protocole. Ils ont affirmé que la Protection Civile n'avait pas été mise au courant de l'opération, que tout cela avait été conduit dans leur dos, et que le résultat était <strong>inacceptable</strong>.</p>
+        <p>Ils ont ensuite évoqué Cité 17. Selon eux, ils allaient devoir <strong>rendre des comptes à Cité 17</strong> suite aux événements — les portails en surface, le chaos dans le district, les morts civils, la coopération avec un biotic non-restreint. Ils ont laissé entendre que la pression descendrait de là-haut, et que quelqu'un devrait en assumer la responsabilité.</p>
+        <p>Puis ils m'ont menacée. Directement. Le mot <strong>Nova Prospekt</strong> a été prononcé à mon endroit. Pas comme une hypothèse abstraite — comme une perspective concrète, formulée pour me faire comprendre où j'en étais.</p>
+      </div>
+      <div class="alert-box">
+        <div class="alert-icon">[!]</div>
+        <div class="alert-text"><strong>RAPPEL FACTUEL — LE CONSEIL :</strong> Cette décision d'attaquer la Ruche avec le concours du Jeune Voyageur n'a pas été prise en coulisse ni dans mon dos. Elle a été <strong>votée lors d'un conseil</strong> auquel participaient : un rank-leader de la Protection Civile, le Major de la Conscription, le Mandataire du District, et d'autres dirigeants de la cité. Un officier PC était présent. La décision avait été entérinée collectivement. Je n'ai fait qu'exécuter ce qui avait été décidé à ce niveau — avec les moyens disponibles au moment critique.</div>
+      </div>
+      <div class="panel" data-label="Réponse de Tyler">
+        <h3>Ce que j'ai répondu — Et ce que je consigne ici</h3>
+        <p>J'ai rappelé aux rank-leaders que chaque étape de ce dossier avait été documentée et soumise à la hiérarchie. Les rapports LYTEA-001, LYTEA-002 et VORT-001 sont là. Les signalements sur Lytéa, ses capacités, son intention d'ouvrir un portail Xen — tout cela figure dans les archives. Nous avions alerté. Nous avions demandé des ressources. Nous avions attendu.</p>
+        <p>Le jour de la crise, j'ai exécuté une décision de conseil avec les moyens que j'avais en main. Si la chaîne de commandement n'avait pas été informée, la question devrait être posée à ceux qui ont assisté au conseil — pas à moi.</p>
+        <p>Quant à Nova Prospekt : je prends note de la menace. Je la consigne dans ce rapport. Et j'espère que quiconque lira ces lignes comprendra dans quel contexte elle a été formulée — après une opération qui a sauvé ce district d'une catastrophe irréversible.</p>
+      </div>
+    </section>
+
+    <section id="s10" class="c-section">
+      <div class="section-header">
+        <div class="section-num danger">SEC.10</div>
+        <div>
+          <div class="section-title">Violences — L'unité qui m'a pris à partie</div>
+          <div class="section-title-sub">TÉMOIGNAGE DIRECT — DR. LUA TYLER // SALLE SANS CAMÉRA</div>
+        </div>
+      </div>
+      <p>Je vais raconter ce qui s'est passé tel que je l'ai vécu. Pas de rapport formel ici — juste ce que j'ai subi.</p>
+      <div class="panel panel-red" data-label="Témoignage — Lua Tyler">
+        <h3 class="red">Ce qui s'est passé</h3>
+        <p>Nous étions dans une salle d'interrogatoire. Pas de caméra. Un membre de la Protection Civile m'a pris à partie — pas verbalement seulement. Il m'a frappée. Je me suis retrouvée avec le nez cassé, le sang sur les mains, sur la tenue, partout. Je n'avais rien vu venir. J'étais épuisée, je sortais des égoûts, j'avais encore les filtres autour du cou.</p>
+        <p>Il m'a tenu responsable de la mort de son camarade. Selon lui, tout ce qui s'était passé ce jour-là — les portails, les créatures, les morts — c'était ma faute. La faute de l'UNISCA. La faute du projet. Il hurlait. À un moment il a attrapé une chaise et l'a balancée dans ma direction. Puis il est sorti — presque en pleurant, de rage — en claquant la porte derrière lui.</p>
+        <p>Je suis restée assise là quelques minutes. Seule. Le nez en sang. À essayer de comprendre ce qui venait de se passer.</p>
+        <p>Je consigne cet incident ici parce qu'il n'y avait pas de caméra dans cette salle et que je veux qu'il existe quelque part, par écrit, avec ma signature dessus. Ce que j'ai subi ce jour-là n'était pas acceptable. Mais je le dis aussi sans chercher de représailles — cet homme avait perdu quelqu'un. Sa douleur était réelle. Elle s'est juste exprimée d'une façon que rien ne justifie.</p>
+        <p>Ces morts ont été causés par Lytéa. Par les portails qu'elle a ouverts, par les créatures qu'elle a envoyées. Ce n'est pas moi qui ai fait flotter les civils dans les rues. Ce n'est pas moi qui ai envoyé un nécrotique de dix mètres fusionner des portails place du cheval. Nous avons arrêté ça. Nous avons tout risqué pour arrêter ça.</p>
+      </div>
+    </section>
+
+    <section id="s11" class="c-section">
+      <div class="section-header">
+        <div class="section-num">SEC.11</div>
+        <div>
+          <div class="section-title">Conclusions &amp; Recommandations</div>
+          <div class="section-title-sub">BILAN OPÉRATIONNEL // LEÇONS // PERSPECTIVES</div>
+        </div>
+      </div>
+      <div class="panel panel-vort" data-label="Bilan final">
+        <h3 class="vort">Ce que nous avons accompli</h3>
+        <p>Le dossier LYTEA est ouvert depuis les premiers rapports sur la Ruche. Nous avons documenté sa nature, cartographié ses extensions, identifié ses capacités, et trouvé la seule entité au monde capable de l'affronter dans son propre territoire. Le Jeune Voyageur est entré dans la Ruche et en est revenu victorieux — au prix de sa vie.</p>
+        <p>Le district respire. Les portails sont fermés. La gravité est normale. Les civils peuvent marcher dans les rues sans craindre d'être soulevés par une force invisible. Ce n'est pas une victoire abstraite — c'est une victoire concrète, réelle, mesurable.</p>
+      </div>
+      <ul class="c-list">
+        <li>Maintenir une surveillance continue du sous-sol — Lytéa est repoussée, non détruite. Les égoûts restent une zone à risque.</li>
+        <li>Documenter formellement le sacrifice du Jeune Voyageur et transmettre une reconnaissance officielle au peuple Vortigaunt via les canaux disponibles.</li>
+        <li>Revoir les protocoles d'autorisation d'urgence pour permettre des décisions rapides en cas de crise de niveau comparable à celle-ci.</li>
+        <li>Rééquiper les stocks de filtres de protection dans les réserves UNISCA — les niveaux actuels sont insuffisants pour une opération souterraine prolongée.</li>
+        <li>Initier un protocole de décontamination du secteur CCH souterrain — les résidus de gaz nécrotique persistent après le retrait de Lytéa.</li>
+        <li>Considérer la possibilité d'une alliance formelle avec les Vortigaunts du district — le Jeune Voyageur a prouvé qu'une telle coopération est possible et efficace.</li>
+      </ul>
+      <div class="c-sep"></div>
+      <div class="panel" data-label="Mot final">
+        <p>Le Jeune Voyageur nous a dit, avant d'entrer dans la Ruche pour la dernière fois : <em>"No fear, we will put you on the right road."</em> Je ne sais pas exactement à qui s'adressait cette phrase — à moi, à son peuple, à la Vortessence. Mais je l'ai entendue. Et je la garde.</p>
+        <p>Ce rapport est le dernier de la série LYTEA — du moins, je l'espère. J'espère ne jamais avoir à en rédiger un quatrième. Mais si cela devenait nécessaire, le dossier sera là.</p>
+        <p>— <strong>Dr. Lua Tyler</strong>, Docteur Chercheuse UNISCA D8</p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer class="c-footer">
+  <div class="left">
+    UNISCA DISTRICT 8 — DIVISION RECHERCHE BIOTIQUE<br>
+    RAPPORT : END-UNISCA-D8-LYTEA-001 // RÉDACTEUR : DR. LUA TYLER<br>
+    FIN DE LA RUCHE — SACRIFICE DU JEUNE VOYAGEUR — BARRIÈRE FERMÉE
+  </div>
+  <div class="right">
+    DOCUMENT CONFIDENTIEL<br>
+    USAGE INTERNE UNISCA UNIQUEMENT<br>
+    TOUTE DIVULGATION EST INTERDITE
+  </div>
+</footer>
+
+</body>
+</html>
