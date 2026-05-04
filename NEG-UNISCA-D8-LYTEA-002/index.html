@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAPPORT DE NÉGOCIATION // NEG-UNISCA-D8-LYTEA-002 // DIVISION RECHERCHE BIOTIQUE</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+:root {
+  --combine-orange: #ffb04a;
+  --combine-orange-dim: #c97d28;
+  --combine-orange-glow: rgba(248,149,42,0.18);
+  --combine-blue: #62d8ec;
+  --combine-blue-dim: #3a9eb0;
+  --bg-dark: #070c10;
+  --bg-panel: rgba(18, 26, 34, 0.92);
+  --bg-panel2: rgba(22, 32, 42, 0.92);
+  --bg-panel3: #0a1016;
+  --text-primary: #faf6ee;
+  --text-secondary: #dce8ee;
+  --text-dim: #b4c4d0;
+  --border-main: #3a4d60;
+  --border-accent: #4a6278;
+  --red-alert: #e85555;
+  --green-ok: #5cb87a;
+  --scan-line: rgba(0, 14, 10, 0.07);
+  --glass-blur: blur(8px);
+  --crt-vignette-edge: rgba(0, 0, 0, 0.38);
+  --vort-green: #4ecb71;
+  --vort-green-dim: #2a7a3e;
+  --vort-green-glow: rgba(78,203,113,0.15);
+  --lytea-purple: #a078e8;
+  --lytea-purple-dim: #6040a0;
+  --lytea-purple-glow: rgba(160,120,232,0.15);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; min-height: 100%; }
+html::before {
+  content: ''; position: fixed; inset: 0; z-index: 1001; pointer-events: none;
+  background: radial-gradient(ellipse 88% 78% at 50% 50%, transparent 0%, transparent 52%, var(--crt-vignette-edge) 100%);
+  opacity: 0.48;
+}
+html::after {
+  content: ''; position: fixed; inset: 0; z-index: 1002; pointer-events: none;
+  background: linear-gradient(183deg, rgba(40,72,58,0.06) 0%, rgba(22,42,36,0.03) 38%, rgba(32,55,45,0.05) 100%);
+  mix-blend-mode: soft-light;
+}
+body {
+  background: var(--bg-dark); color: var(--text-primary);
+  font-family: 'Rajdhani', sans-serif; font-size: 17px; line-height: 1.75; font-weight: 500;
+  min-height: 100vh; overflow-x: hidden;
+}
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-dark); border-left: 1px solid var(--border-main); }
+::-webkit-scrollbar-thumb { background: var(--combine-orange-dim); }
+::-webkit-scrollbar-thumb:hover { background: var(--combine-orange); }
+body::before {
+  content: ''; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: repeating-linear-gradient(0deg, transparent 0, transparent 2px, var(--scan-line) 2px, var(--scan-line) 3px);
+  pointer-events: none; z-index: 1000;
+}
+body::after {
+  content: ''; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 999; opacity: 0.28;
+}
+.doc-watermark {
+  position: fixed; inset: 0; z-index: 550; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='200' viewBox='0 0 360 200'%3E%3Ctext x='180' y='102' fill='%23faf6ee' fill-opacity='0.030' font-family='Arial,sans-serif' font-size='19' font-weight='700' text-anchor='middle' dominant-baseline='middle' transform='rotate(-28 180 100)'%3ECONFIDENTIEL%3C/text%3E%3C/svg%3E");
+  background-repeat: repeat; background-size: 360px 200px;
+}
+.boot-overlay {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: var(--bg-dark); z-index: 9999;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 40px;
+  transition: opacity 1.6s ease-in-out; pointer-events: none;
+}
+.boot-overlay.fade-out { opacity: 0; visibility: hidden; }
+.boot-header {
+  font-family: 'Orbitron', monospace; font-size: 11px; letter-spacing: 0.25em; color: var(--combine-orange-dim);
+  text-align: center; text-transform: uppercase; border-bottom: 1px solid var(--combine-orange-dim);
+  padding-bottom: 14px; width: 520px; max-width: 90vw;
+}
+.boot-header .bh-main { font-size: 18px; font-weight: 700; color: var(--combine-orange); letter-spacing: 0.2em; display: block; margin-bottom: 6px; text-shadow: 0 0 14px rgba(248,149,42,0.5); }
+.boot-header .bh-author { font-size: 10px; color: var(--text-dim); letter-spacing: 0.15em; }
+.boot-text { font-family: 'Share Tech Mono', monospace; color: var(--combine-orange); font-size: 12.5px; text-align: left; line-height: 2.2; letter-spacing: 0.09em; width: 520px; max-width: 90vw; min-height: 200px; }
+.boot-cursor { display: inline-block; width: 8px; height: 14px; background: var(--combine-orange); margin-left: 2px; vertical-align: middle; animation: cursor-blink 0.7s step-end infinite; }
+@keyframes cursor-blink { 50% { opacity: 0; } }
+@keyframes logo-pulse {
+  0%, 100% { filter: drop-shadow(0 0 14px rgba(248,149,42,0.45)) brightness(0.9) saturate(0.65); }
+  50% { filter: drop-shadow(0 0 28px rgba(248,149,42,0.75)) brightness(1.0) saturate(0.8); }
+}
+.c-header {
+  background: linear-gradient(180deg, rgba(10,15,20,0.97) 0%, rgba(13,18,21,0.97) 100%);
+  backdrop-filter: var(--glass-blur); border-bottom: 2px solid var(--combine-orange);
+  position: sticky; top: 0; z-index: 500; box-shadow: 0 4px 30px rgba(248,149,42,0.15);
+}
+.c-header-top { display: flex; align-items: center; justify-content: space-between; padding: 10px 30px; border-bottom: 1px solid var(--border-main); }
+.c-logo { display: flex; align-items: center; gap: 14px; }
+.c-logo-emblem {
+  height: 48px; padding: 3px; border: 2px solid var(--combine-orange); border-radius: 4px;
+  display: flex; align-items: center; justify-content: center; background: transparent;
+  animation: emblem-pulse 3s ease-in-out infinite;
+}
+@keyframes emblem-pulse {
+  0%,100% { box-shadow: 0 0 8px rgba(232,133,26,0.4); }
+  50% { box-shadow: 0 0 22px rgba(232,133,26,0.75), 0 0 44px rgba(232,133,26,0.2); }
+}
+.c-logo-text { font-family: 'Orbitron', monospace; }
+.c-logo-text .line1 { font-size: 11px; letter-spacing: 0.15em; color: var(--combine-orange); font-weight: 700; }
+.c-logo-text .line2 { font-size: 9px; letter-spacing: 0.1em; color: var(--text-dim); font-weight: 400; }
+.c-header-status { display: flex; align-items: center; gap: 24px; }
+.status-item { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--text-dim); letter-spacing: 0.08em; text-align: right; }
+.status-item span { display: block; color: var(--text-secondary); }
+.status-item .val { color: var(--combine-orange); }
+.status-item .val-green { color: var(--vort-green); text-shadow: 0 0 6px rgba(78,203,113,0.5); }
+.status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--vort-green); animation: blink-green 1.8s step-end infinite; box-shadow: 0 0 8px var(--vort-green); }
+@keyframes blink-green { 50% { opacity: 0.2; } }
+@keyframes blink-red { 50% { opacity: 0.2; } }
+.c-header-title-bar { padding: 8px 30px; display: flex; align-items: baseline; gap: 20px; background: rgba(232,133,26,0.04); flex-wrap: wrap; }
+.c-header-title-bar h1 { font-family: 'Orbitron', monospace; font-size: 12px; font-weight: 700; letter-spacing: 0.1em; color: var(--combine-orange); text-transform: uppercase; }
+.c-header-title-bar .sub { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--text-dim); letter-spacing: 0.06em; }
+.clearance-badge { margin-left: auto; background: rgba(196,48,48,0.15); border: 1px solid var(--red-alert); color: var(--red-alert); font-family: 'Orbitron', monospace; font-size: 9px; letter-spacing: 0.15em; padding: 3px 10px; border-radius: 2px; text-shadow: 0 0 6px rgba(232,85,85,0.4); animation: blink-red 2s step-end infinite; }
+.ticker { font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 0.13em; font-weight: 700; color: var(--combine-orange); padding: 5px 30px; background: rgba(20, 12, 0, 0.92); border-top: 1px solid rgba(232,133,26,0.5); border-bottom: 2px solid rgba(232,133,26,0.7); overflow: hidden; white-space: nowrap; box-shadow: 0 0 18px rgba(232,133,26,0.18); text-shadow: 0 0 8px rgba(255,176,74,0.5); }
+.ticker-inner { display: inline-block; animation: ticker-scroll 100s linear infinite; }
+@keyframes ticker-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+.c-layout { display: grid; grid-template-columns: 268px 1fr; min-height: calc(100vh - 110px); max-width: 1440px; margin: 0 auto; }
+.c-sidebar { background: var(--bg-panel3); border-right: 1px solid var(--border-main); padding: 20px 0; position: sticky; top: 110px; height: calc(100vh - 110px); overflow-y: auto; }
+.c-sidebar::-webkit-scrollbar { width: 4px; }
+.c-sidebar::-webkit-scrollbar-track { background: var(--bg-dark); }
+.c-sidebar::-webkit-scrollbar-thumb { background: var(--combine-orange-dim); }
+.sidebar-label { font-family: 'Share Tech Mono', monospace; font-size: 9px; letter-spacing: 0.15em; color: var(--text-dim); text-transform: uppercase; padding: 8px 16px 4px; display: flex; align-items: center; gap: 6px; }
+.sidebar-label::before { content: ''; width: 12px; height: 1px; background: var(--text-dim); }
+.sidebar-link { display: flex; align-items: center; gap: 8px; padding: 7px 16px; font-family: 'Rajdhani', sans-serif; font-size: 13.5px; font-weight: 600; color: var(--text-secondary); text-decoration: none; transition: all 0.15s; border-left: 2px solid transparent; }
+.sidebar-link:hover { color: var(--combine-orange); background: var(--combine-orange-glow); border-left-color: var(--combine-orange); }
+.sidebar-link .idx { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--text-dim); min-width: 22px; }
+.sidebar-link.lytea { color: #c0a8ee; }
+.sidebar-link.lytea:hover { color: var(--lytea-purple); background: var(--lytea-purple-glow); border-left-color: var(--lytea-purple); }
+.sidebar-divider { height: 1px; background: var(--border-main); margin: 10px 16px; }
+.sidebar-meta { padding: 14px 16px; background: rgba(232,133,26,0.04); border-top: 1px solid var(--border-main); }
+.sidebar-meta .meta-row { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--text-dim); margin-bottom: 5px; display: flex; justify-content: space-between; }
+.sidebar-meta .meta-row span { color: var(--text-secondary); }
+.sidebar-meta .meta-row .val-green { color: var(--vort-green); }
+.c-main { padding: 32px 42px; max-width: 960px; }
+.c-main p { margin-bottom: 0.85em; }
+.section-header { display: flex; align-items: center; gap: 16px; margin-bottom: 28px; padding-bottom: 14px; border-bottom: 1px solid var(--border-accent); position: relative; transition: all 0.3s; }
+.section-header:hover { border-bottom-color: var(--combine-orange-dim); }
+.section-header::after { content: ''; position: absolute; bottom: -1px; left: 0; width: 80px; height: 2px; background: var(--combine-orange); box-shadow: 0 0 8px var(--combine-orange); transition: width 0.3s ease; }
+.section-header:hover::after { width: 130px; }
+.section-num { font-family: 'Orbitron', monospace; font-size: 12px; color: var(--combine-orange); background: rgba(248,149,42,0.12); border: 1px solid var(--combine-orange-dim); padding: 6px 10px; letter-spacing: 0.1em; min-width: 64px; text-align: center; box-shadow: inset 0 0 10px rgba(248,149,42,0.1); text-shadow: 0 0 5px rgba(248,149,42,0.5); }
+.section-num.lytea { color: var(--lytea-purple); background: rgba(160,120,232,0.12); border-color: rgba(160,120,232,0.5); text-shadow: 0 0 5px rgba(160,120,232,0.5); }
+.section-title { font-family: 'Orbitron', monospace; font-size: 15px; font-weight: 700; letter-spacing: 0.12em; color: var(--text-primary); text-transform: uppercase; text-shadow: 0 0 8px rgba(228,217,184,0.3); }
+.section-title-sub { font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 0.1em; color: var(--text-secondary); margin-top: 6px; opacity: 0.92; }
+.c-section { margin-bottom: 58px; animation: fade-in-up 0.6s ease-out forwards; opacity: 0; transform: translateY(20px); }
+.c-section:nth-child(1) { animation-delay: 2.0s; }
+.c-section:nth-child(2) { animation-delay: 2.15s; }
+.c-section:nth-child(3) { animation-delay: 2.3s; }
+.c-section:nth-child(4) { animation-delay: 2.45s; }
+.c-section:nth-child(5) { animation-delay: 2.6s; }
+.c-section:nth-child(6) { animation-delay: 2.75s; }
+.c-section:nth-child(7) { animation-delay: 2.9s; }
+.c-section:nth-child(8) { animation-delay: 3.05s; }
+.c-section:nth-child(9) { animation-delay: 3.2s; }
+.c-section:nth-child(10) { animation-delay: 3.35s; }
+.c-section:nth-child(n+11) { animation-delay: 3.5s; }
+@keyframes fade-in-up { to { opacity: 1; transform: translateY(0); } }
+.panel { background: var(--bg-panel); border: 1px solid var(--border-main); border-left: 3px solid var(--combine-orange-dim); padding: 20px 22px; margin-bottom: 16px; position: relative; transition: all 0.3s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+.panel:hover { border-color: var(--combine-orange-dim); box-shadow: 0 4px 20px var(--combine-orange-glow); transform: translateY(-2px); }
+.panel::before { content: attr(data-label); position: absolute; top: -1px; right: 16px; font-family: 'Share Tech Mono', monospace; font-size: 8px; letter-spacing: 0.12em; color: var(--combine-orange); background: var(--bg-panel); padding: 0 6px; text-transform: uppercase; }
+.panel-blue { border-left-color: var(--combine-blue-dim); }
+.panel-blue:hover { border-color: var(--combine-blue-dim); box-shadow: 0 4px 20px rgba(74,197,216,0.15); }
+.panel-blue::before { color: var(--combine-blue); }
+.panel-lytea { border-left-color: var(--lytea-purple-dim); }
+.panel-lytea:hover { border-color: var(--lytea-purple); box-shadow: 0 4px 20px var(--lytea-purple-glow); }
+.panel-lytea::before { color: var(--lytea-purple); }
+.panel-vort { border-left-color: var(--vort-green-dim); }
+.panel-vort:hover { border-color: var(--vort-green); box-shadow: 0 4px 20px var(--vort-green-glow); }
+.panel-vort::before { color: var(--vort-green); }
+.panel h3 { font-family: 'Rajdhani', sans-serif; font-size: 18px; font-weight: 700; color: var(--combine-orange); letter-spacing: 0.05em; margin-bottom: 10px; text-shadow: 0 0 8px rgba(248,149,42,0.3); }
+.panel p { font-size: 16px; font-weight: 500; color: var(--text-secondary); line-height: 1.82; margin-bottom: 14px; }
+.panel p:last-child { margin-bottom: 0; }
+.data-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin-bottom: 16px; }
+.data-cell { background: var(--bg-panel2); border: 1px solid var(--border-main); border-top: 2px solid var(--combine-orange-dim); padding: 14px 16px; transition: all 0.2s ease; cursor: default; }
+.data-cell:hover { background: rgba(248,149,42,0.05); border-top-color: var(--combine-orange); transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.4); }
+.data-cell.dc-green { border-top-color: rgba(78,203,113,0.6); }
+.data-cell.dc-green:hover { border-top-color: var(--vort-green); }
+.data-cell .dc-label { font-family: 'Share Tech Mono', monospace; font-size: 9px; letter-spacing: 0.1em; color: var(--text-dim); text-transform: uppercase; margin-bottom: 6px; }
+.data-cell .dc-value { font-family: 'Orbitron', monospace; font-size: 15px; font-weight: 700; color: var(--combine-orange); text-shadow: 0 0 10px rgba(248,149,42,0.4); }
+.data-cell .dc-value.green { color: var(--vort-green); text-shadow: 0 0 10px rgba(78,203,113,0.4); }
+.data-cell .dc-value.lytea { color: var(--lytea-purple); text-shadow: 0 0 10px rgba(160,120,232,0.4); }
+.data-cell .dc-sub { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--text-dim); margin-top: 6px; line-height: 1.45; }
+.c-table-wrapper { overflow-x: auto; margin-bottom: 16px; border: 1px solid var(--border-main); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+.c-table { width: 100%; border-collapse: collapse; font-family: 'Rajdhani', sans-serif; font-size: 15px; }
+.c-table thead tr { background: rgba(248,149,42,0.1); border-bottom: 2px solid var(--combine-orange-dim); }
+.c-table th { font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 0.1em; color: var(--combine-orange); text-transform: uppercase; padding: 12px 16px; text-align: left; white-space: nowrap; }
+.c-table td { padding: 12px 16px; color: var(--text-secondary); font-weight: 500; border-bottom: 1px solid var(--border-main); vertical-align: top; }
+.c-table tbody tr:hover { background: rgba(248,149,42,0.06); }
+.c-table tbody tr:nth-child(even) { background: rgba(0,0,0,0.3); }
+.c-table .highlight { color: var(--combine-orange); font-weight: 700; }
+.c-table .highlight-lytea { color: var(--lytea-purple); font-weight: 700; }
+.c-table .highlight-vort { color: var(--vort-green); font-weight: 700; }
+.c-table .dim { color: var(--text-dim); font-size: 12px; }
+.c-list { list-style: none; margin-bottom: 16px; }
+.c-list li { display: flex; align-items: flex-start; gap: 12px; padding: 10px 10px; border-bottom: 1px solid rgba(46,64,80,0.5); color: var(--text-secondary); font-size: 15px; line-height: 1.7; transition: all 0.2s; }
+.c-list li:last-child { border-bottom: none; }
+.c-list li:hover { background: rgba(248,149,42,0.04); color: var(--text-primary); transform: translateX(4px); }
+.c-list li::before { content: '>>'; font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--combine-orange-dim); flex-shrink: 0; margin-top: 3px; }
+.c-list li:hover::before { color: var(--combine-orange); text-shadow: 0 0 5px var(--combine-orange); }
+.c-list li .li-body { flex: 1; min-width: 0; }
+.info-box { background: rgba(74,197,216,0.08); border: 1px solid rgba(74,197,216,0.3); border-left: 3px solid var(--combine-blue-dim); padding: 16px 20px; margin-bottom: 18px; display: flex; gap: 14px; }
+.info-box .info-icon { font-family: 'Share Tech Mono', monospace; font-size: 14px; color: var(--combine-blue); flex-shrink: 0; margin-top: 2px; text-shadow: 0 0 8px var(--combine-blue); }
+.info-box .info-text { font-size: 14px; color: var(--text-secondary); line-height: 1.7; }
+.lytea-box { background: rgba(160,120,232,0.07); border: 1px solid rgba(160,120,232,0.3); border-left: 3px solid var(--lytea-purple-dim); padding: 16px 20px; margin-bottom: 18px; display: flex; gap: 14px; animation: lytea-pulse 4s ease-in-out infinite alternate; }
+@keyframes lytea-pulse { 0% { box-shadow: 0 0 5px rgba(160,120,232,0.08); } 100% { box-shadow: 0 0 18px rgba(160,120,232,0.28); } }
+.lytea-box .lytea-icon { font-family: 'Share Tech Mono', monospace; font-size: 14px; color: var(--lytea-purple); flex-shrink: 0; margin-top: 2px; text-shadow: 0 0 8px var(--lytea-purple); }
+.lytea-box .lytea-text { font-size: 14px; color: #c0b0e0; line-height: 1.7; }
+.lytea-box .lytea-text strong { color: #d8caf0; }
+.vort-box { background: rgba(78,203,113,0.07); border: 1px solid rgba(78,203,113,0.3); border-left: 3px solid var(--vort-green-dim); padding: 16px 20px; margin-bottom: 18px; display: flex; gap: 14px; }
+.vort-box .vort-icon { font-family: 'Share Tech Mono', monospace; font-size: 14px; color: var(--vort-green); flex-shrink: 0; margin-top: 2px; text-shadow: 0 0 8px var(--vort-green); }
+.vort-box .vort-text { font-size: 14px; color: #a0d4b0; line-height: 1.7; }
+.vort-box .vort-text strong { color: #c4e8cc; }
+.alert-box { background: rgba(232,85,85,0.07); border: 1px solid rgba(232,85,85,0.3); border-left: 3px solid #8a2a2a; padding: 16px 20px; margin-bottom: 18px; display: flex; gap: 14px; }
+.alert-box .alert-icon { font-family: 'Share Tech Mono', monospace; font-size: 14px; color: var(--red-alert); flex-shrink: 0; margin-top: 2px; text-shadow: 0 0 8px var(--red-alert); }
+.alert-box .alert-text { font-size: 14px; color: #e0a0a0; line-height: 1.7; }
+.alert-box .alert-text strong { color: #f0c0c0; }
+.cite-terminal { border-left: 3px solid var(--lytea-purple); background: repeating-linear-gradient(0deg, transparent 0, transparent 2px, rgba(0,0,0,0.06) 2px, rgba(0,0,0,0.06) 3px), linear-gradient(180deg, rgba(14,20,26,0.98) 0%, rgba(8,12,18,0.99) 100%); margin-bottom: 24px; }
+.cite-terminal-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 14px 20px 12px 18px; border-bottom: 1px solid var(--border-main); }
+.cite-terminal-title { font-family: 'Rajdhani', sans-serif; font-size: 16px; font-weight: 700; color: var(--text-primary); line-height: 1.3; }
+.cite-terminal-tag { font-family: 'Share Tech Mono', monospace; font-size: 9px; letter-spacing: 0.16em; color: var(--lytea-purple); white-space: nowrap; margin-top: 3px; text-shadow: 0 0 8px rgba(160,120,232,0.35); }
+.cite-terminal-row { display: flex; align-items: flex-start; gap: 12px; padding: 11px 20px 11px 18px; border-bottom: 1px solid rgba(46,64,80,0.55); font-size: 15px; font-weight: 500; line-height: 1.75; color: var(--text-secondary); }
+.cite-terminal-row:last-child { border-bottom: none; }
+.cite-terminal-chev { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--combine-orange); flex-shrink: 0; margin-top: 4px; }
+.cite-terminal-chev.lytea { color: var(--lytea-purple); text-shadow: 0 0 5px var(--lytea-purple); }
+.cite-terminal-text { flex: 1; min-width: 0; }
+.cite-terminal-text .lab { font-weight: 700; color: var(--text-primary); }
+.cite-terminal-text .lab.lytea-name { color: var(--lytea-purple); }
+.phase-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 14px; margin-bottom: 20px; }
+.phase-card { background: var(--bg-panel); border: 1px solid var(--border-main); padding: 18px 20px; position: relative; overflow: hidden; transition: all 0.3s ease; }
+.phase-card:hover { border-color: var(--combine-orange-dim); box-shadow: 0 8px 25px rgba(248,149,42,0.15); transform: translateY(-4px); }
+.phase-card::after { content: ''; position: absolute; top: 0; right: 0; width: 0; height: 0; border-style: solid; border-width: 0 28px 28px 0; border-color: transparent var(--combine-orange-dim) transparent transparent; }
+.phase-num { font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 0.12em; color: var(--combine-orange); margin-bottom: 6px; }
+.phase-name { font-family: 'Rajdhani', sans-serif; font-size: 16px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px; line-height: 1.3; }
+.phase-desc { font-size: 13.5px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 10px; }
+.phase-duration { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--combine-orange-dim); border-top: 1px solid var(--border-main); padding-top: 9px; }
+.c-sep { height: 1px; background: linear-gradient(90deg, var(--combine-orange-dim), transparent); margin: 28px 0; }
+.team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-bottom: 14px; }
+.team-card { background: var(--bg-panel2); border: 1px solid var(--border-main); padding: 14px; display: flex; gap: 12px; align-items: flex-start; }
+.team-avatar { width: 44px; height: 44px; border: 1px solid var(--combine-orange-dim); background: rgba(232,133,26,0.08); display: flex; align-items: center; justify-content: center; font-family: 'Orbitron', monospace; font-size: 12px; color: var(--combine-orange); flex-shrink: 0; }
+.team-avatar.lytea { border-color: var(--lytea-purple-dim); background: rgba(160,120,232,0.08); color: var(--lytea-purple); }
+.team-avatar.mil { border-color: rgba(180,140,80,0.5); background: rgba(180,140,80,0.08); color: #d4a840; }
+.team-avatar.utc { border-color: rgba(74,197,216,0.5); background: rgba(74,197,216,0.08); color: var(--combine-blue); }
+.team-name { font-family: 'Rajdhani', sans-serif; font-size: 15px; font-weight: 700; color: var(--text-primary); }
+.team-role { font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 0.06em; color: var(--text-secondary); margin-top: 4px; line-height: 1.5; }
+strong { color: var(--text-primary); font-weight: 700; }
+.c-main h2 { font-family: 'Orbitron', monospace; font-size: 12.5px; letter-spacing: 0.1em; color: var(--combine-orange); text-transform: uppercase; margin: 24px 0 12px; }
+.c-main h3 { font-family: 'Rajdhani', sans-serif; font-size: 17px; font-weight: 700; color: var(--text-primary); margin: 18px 0 10px; border-left: 3px solid var(--combine-orange-dim); padding-left: 10px; }
+.reader-note { background: rgba(74,197,216,0.08); border: 1px solid rgba(98,216,236,0.4); border-left: 3px solid var(--combine-blue-dim); padding: 18px 22px; margin-bottom: 22px; font-size: 16px; font-weight: 500; line-height: 1.82; color: var(--text-secondary); }
+.reader-note strong { color: var(--text-primary); }
+.reader-note .rn-title { font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 0.12em; color: var(--combine-blue); text-transform: uppercase; margin-bottom: 10px; }
+.c-footer { background: var(--bg-panel3); border-top: 2px solid var(--combine-orange-dim); padding: 16px 30px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px 20px; }
+.c-footer .left { font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 0.08em; color: var(--text-secondary); line-height: 1.8; }
+.c-footer .right { font-family: 'Orbitron', monospace; font-size: 8px; letter-spacing: 0.12em; color: var(--combine-orange-dim); text-align: right; line-height: 1.8; }
+/* Censure / redaction */
+.redacted-block {
+  background: #000 !important; color: transparent !important; user-select: none;
+  border-radius: 2px; padding: 12px 16px; position: relative; margin-bottom: 0.85em;
+}
+.redacted-block::after {
+  content: '— DONNÉES SUPPRIMÉES —'; position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%); font-family: 'Share Tech Mono', monospace;
+  font-size: 11px; letter-spacing: 0.18em; color: var(--red-alert); white-space: nowrap;
+  pointer-events: none;
+}
+.panel-censored { border-left-color: rgba(232,85,85,0.6) !important; position: relative; }
+.panel-censored::before { content: 'CENSURÉ' !important; color: var(--red-alert) !important; }
+.panel-censored::after {
+  content: 'DONNÉES SUPPRIMÉES'; position: absolute; top: 50%; right: 16px;
+  transform: translateY(-50%) rotate(-8deg); font-family: 'Orbitron', monospace;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.2em; color: rgba(232,85,85,0.18);
+  pointer-events: none; text-transform: uppercase;
+}
+@media (max-width: 860px) { .c-layout { grid-template-columns: 1fr; } .c-sidebar { display: none; } .c-main { padding: 20px 18px; } }
+@media print {
+  @page { size: A4; margin: 12mm; }
+  html::before, html::after, body::before, body::after { display: none !important; }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { background: #fff !important; font-size: 10pt; line-height: 1.5; color: #111; }
+  .boot-overlay, .doc-watermark, .ticker { display: none !important; }
+  .c-header { position: static !important; background: #fff !important; border-bottom: 2px solid #222 !important; box-shadow: none !important; }
+  .c-layout { grid-template-columns: 52mm 1fr !important; }
+  .c-section { opacity: 1 !important; transform: none !important; animation: none !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="doc-watermark"></div>
+
+<div class="boot-overlay" id="bootOverlay">
+  <img src="unisca-logo.png" alt="UNISCA" style="width:110px;height:110px;object-fit:contain;border-radius:50%;filter:drop-shadow(0 0 18px rgba(248,149,42,0.55)) brightness(0.92) saturate(0.7);animation:logo-pulse 3s ease-in-out infinite;">
+  <div class="boot-header">
+    <span class="bh-main">UNISCA // TERMINAL SÉCURISÉ</span>
+    <span class="bh-author">RAPPORT RÉDIGÉ PAR // DR. LUA TYLER — DOCTEUR CHERCHEUSE UNISCA D8</span>
+  </div>
+  <div class="boot-text" id="bootText"><span class="boot-cursor"></span></div>
+</div>
+
+<script>
+(function() {
+  const lines = [
+    { text: "INITIALIZING SECURE TERMINAL — DISTRICT 8 // CITÉ 13...", cls: "" },
+    { text: "CHARGEMENT DOSSIER : NEG-UNISCA-D8-LYTEA-002", cls: "orange" },
+    { text: "VÉRIFICATION ACCRÉDITATION...", cls: "" },
+    { text: "NIVEAU ÉLEVÉ — ACCÈS ACCORDÉ.", cls: "green" },
+    { text: "AUTEUR : DR. LUA TYLER // DOCTEUR CHERCHEUSE UNISCA D8", cls: "orange" },
+    { text: "OBJET : CONTACT LYTÉA EN LABORATOIRE — NÉGOCIATION — TÉLÉPORTATION GRAMONT", cls: "" },
+    { text: "─────────────────────────────────────────────────────", cls: "dim" },
+    { text: ">>  LYTÉA APPARUE SPONTANÉMENT   : LABORATOIRE UNISCA D8 — SANS PRÉAVIS", cls: "orange" },
+    { text: ">>  ACCORD PARTIEL CONCLU        : 2 CAISSES CONTRE PLANS DE SYNTHÈSE CRISTAL NOIR", cls: "orange" },
+    { text: ">>  GRAMONT TÉLÉPORTÉ            : CŒUR DE LA RUCHE — RETOUR CONFIRMÉ — SANS SÉQUELLE", cls: "green" },
+    { text: ">>  CRISTAL NOIR REÇU            : TÉLÉPORTÉ DANS LE LABORATOIRE PENDANT LE DEBRIEFING", cls: "green" },
+    { text: ">>  ÉNERGIE NOIRE                : [DONNÉES SUPPRIMÉES]", cls: "red" },
+    { text: ">>  BLESSÉS                      : AUCUN — AUCUN AVERTISSEMENT — ÉCHANGE SIMPLE", cls: "green" },
+    { text: "─────────────────────────────────────────────────────", cls: "dim" },
+    { text: "RETRANSCRIPTION NOTES MANUSCRITES — DR. TYLER...", cls: "" },
+    { text: "DOCUMENT CONFIDENTIEL — USAGE INTERNE UNISCA UNIQUEMENT.", cls: "orange" },
+    { text: "ACCÈS AUTORISÉ. PROCÉDER AVEC PRÉCAUTION.", cls: "green" },
+  ];
+  const container = document.getElementById('bootText');
+  const cursor = container.querySelector('.boot-cursor');
+  let lineIdx = 0;
+  function typeLine(line, cb) {
+    const colorMap = { red: 'var(--red-alert)', green: 'var(--vort-green)', orange: 'var(--combine-orange)', dim: 'var(--text-dim)', '': 'inherit' };
+    const div = document.createElement('div');
+    div.style.color = colorMap[line.cls] || 'inherit';
+    container.insertBefore(div, cursor);
+    let i = 0;
+    const iv = setInterval(() => {
+      div.textContent = line.text.slice(0, ++i);
+      if (i >= line.text.length) { clearInterval(iv); setTimeout(cb, 120); }
+    }, 18);
+  }
+  function nextLine() {
+    if (lineIdx >= lines.length) { setTimeout(() => { document.getElementById('bootOverlay').classList.add('fade-out'); }, 2200); return; }
+    typeLine(lines[lineIdx++], nextLine);
+  }
+  setTimeout(nextLine, 400);
+})();
+</script>
+
+<header class="c-header">
+  <div class="c-header-top">
+    <div class="c-logo">
+      <div class="c-logo-emblem">
+        <img src="unisca-logo.png" alt="UNISCA" style="height:40px;width:40px;object-fit:contain;border-radius:50%;filter:drop-shadow(0 0 6px rgba(248,149,42,0.4)) brightness(0.9) saturate(0.65);">
+      </div>
+      <div class="c-logo-text">
+        <div class="line1">DIVISION RECHERCHE BIOTIQUE // DISTRICT 8</div>
+        <div class="line2">CITÉ 13 — PARIS // SECOND CONTACT LYTÉA — LABORATOIRE UNISCA D8 &amp; PORTE DE LA RUCHE</div>
+      </div>
+    </div>
+    <div class="c-header-status">
+      <div class="status-item">OPÉRATEUR<br><span class="val">DR. LUA TYLER</span></div>
+      <div class="status-item">RÉFÉRENCE<br><span class="val">NEG-UNISCA-D8-LYTEA-002</span></div>
+      <div class="status-item">STATUT ÉQUIPE<br><span class="val-green">RETOUR CONFIRMÉ</span></div>
+      <div class="status-dot"></div>
+    </div>
+  </div>
+  <div class="c-header-title-bar">
+    <h1>RAPPORT DE NÉGOCIATION // LYTÉA EN LABORATOIRE — ACCORD D'ÉCHANGE — TÉLÉPORTATION GRAMONT — CRISTAL NOIR REÇU</h1>
+    <span class="sub">LABO UNISCA D8 &amp; SECTEUR PORTE DE LA RUCHE // RÉDACTION DR. LUA TYLER // AUCUN BLESSÉ — ACCORD PARTIEL CONCLU</span>
+    <div class="clearance-badge">⚠ CONFIDENTIEL</div>
+  </div>
+</header>
+
+<div class="ticker">
+  <span class="ticker-inner">
+    CONFIDENTIEL &nbsp;·&nbsp; ACCÈS RESTREINT — ADMINISTRATION UNISCA D8 UNIQUEMENT &nbsp;·&nbsp; NEG-UNISCA-D8-LYTEA-002 — LYTÉA APPARUE SPONTANÉMENT DANS LE LABORATOIRE &nbsp;·&nbsp; ACCORD : 2 CAISSES MATIÈRES PRIMAIRES CONTRE PLANS DE SYNTHÈSE CRISTAL NOIR &nbsp;·&nbsp; GRAMONT TÉLÉPORTÉ DANS LA RUCHE — TRANSMISSION NEURONALE DES SCHÉMAS — RETOUR SANS SÉQUELLE &nbsp;·&nbsp; CRISTAL NOIR TÉLÉPORTÉ DANS LE LABORATOIRE PENDANT LE DEBRIEFING — RÉCEPTION CONFIRMÉE &nbsp;·&nbsp; AUCUN BLESSÉ — AUCUN AVERTISSEMENT DE LYTÉA — ÉCHANGE SIMPLE ET CONFORME &nbsp;·&nbsp; COMPOSANT ÉNERGIE NOIRE — [DONNÉES SUPPRIMÉES] &nbsp;·&nbsp;
+    CONFIDENTIEL &nbsp;·&nbsp; ACCÈS RESTREINT — ADMINISTRATION UNISCA D8 UNIQUEMENT &nbsp;·&nbsp; NEG-UNISCA-D8-LYTEA-002 — LYTÉA APPARUE SPONTANÉMENT DANS LE LABORATOIRE &nbsp;·&nbsp; ACCORD : 2 CAISSES MATIÈRES PRIMAIRES CONTRE PLANS DE SYNTHÈSE CRISTAL NOIR &nbsp;·&nbsp; GRAMONT TÉLÉPORTÉ DANS LA RUCHE — TRANSMISSION NEURONALE DES SCHÉMAS — RETOUR SANS SÉQUELLE &nbsp;·&nbsp; CRISTAL NOIR TÉLÉPORTÉ DANS LE LABORATOIRE PENDANT LE DEBRIEFING — RÉCEPTION CONFIRMÉE &nbsp;·&nbsp; AUCUN BLESSÉ — AUCUN AVERTISSEMENT DE LYTÉA — ÉCHANGE SIMPLE ET CONFORME &nbsp;·&nbsp; COMPOSANT ÉNERGIE NOIRE — [DONNÉES SUPPRIMÉES] &nbsp;·&nbsp;
+  </span>
+</div>
+
+<div class="c-layout">
+
+  <nav class="c-sidebar">
+    <div class="sidebar-label">Navigation</div>
+    <a href="#s00" class="sidebar-link"><span class="idx">00</span> Vue d'ensemble</a>
+    <a href="#s01" class="sidebar-link"><span class="idx">01</span> Participants</a>
+    <a href="#s02" class="sidebar-link lytea"><span class="idx">02</span> Apparition spontanée</a>
+    <a href="#s03" class="sidebar-link"><span class="idx">03</span> Déroulement — Chronologie</a>
+    <a href="#s04" class="sidebar-link lytea"><span class="idx">04</span> Négociation — Accord</a>
+    <a href="#s05" class="sidebar-link"><span class="idx">05</span> Déplacement vers la ruche</a>
+    <a href="#s06" class="sidebar-link lytea"><span class="idx">06</span> Téléportation de Gramont</a>
+    <a href="#s07" class="sidebar-link lytea"><span class="idx">07</span> Debriefing — Visions &amp; schémas</a>
+    <a href="#s08" class="sidebar-link lytea"><span class="idx">08</span> Cristal noir reçu</a>
+    <a href="#s09" class="sidebar-link"><span class="idx">09</span> [Données supprimées]</a>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-label">Analyse</div>
+    <a href="#s10" class="sidebar-link"><span class="idx">10</span> Machine de synthèse</a>
+    <a href="#s11" class="sidebar-link"><span class="idx">11</span> Conclusions</a>
+    <a href="#s12" class="sidebar-link"><span class="idx">12</span> Recommandations</a>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-label">Annexes</div>
+    <a href="#s13" class="sidebar-link"><span class="idx">↳</span> Retranscription dialogue</a>
+    <div class="sidebar-meta">
+      <div class="meta-row">DATE <span>Session en cours</span></div>
+      <div class="meta-row">RÉFÉRENCE <span>NEG-UNISCA-D8-LYTEA-002</span></div>
+      <div class="meta-row">CLASSIF. <span>CONFIDENTIEL</span></div>
+      <div class="meta-row">STATUT <span class="val-green">AUCUN BLESSÉ</span></div>
+      <div class="meta-row">CRISTAL REÇU <span class="val-green">OUI</span></div>
+      <div class="meta-row">RÉDACTEUR <span>DR. LUA TYLER</span></div>
+    </div>
+  </nav>
+
+  <main class="c-main">
+
+    <!-- SEC 00 -->
+    <section id="s00" class="c-section">
+      <div class="section-header">
+        <div class="section-num">SEC.00</div>
+        <div>
+          <div class="section-title">Vue d'ensemble</div>
+          <div class="section-title-sub">CONTEXTE // OBJET DU RAPPORT // SYNTHÈSE</div>
+        </div>
+      </div>
+
+      <div class="reader-note">
+        <div class="rn-title">// Note de transmission — Administration UNISCA &amp; Mandataire District 8 //</div>
+        Document rédigé par le Dr. <strong>Lua Tyler</strong>, docteur chercheuse UNISCA D8, faisant suite au rapport <strong>EXP-UNISCA-D8-RUCHE-001</strong>. Ce rapport couvre la <strong>deuxième rencontre avec l'entité Lytéa</strong>, apparue spontanément dans notre laboratoire sans préavis, ainsi que la négociation qui s'en est suivie, le déplacement de l'équipe vers la porte de la ruche pour effectuer la transaction, la <strong>téléportation de H. de Gramont dans le cœur de la ruche</strong> pour transmission des schémas de la machine de synthèse, le retour de Gramont, le debriefing puis déplacement vers une piscine pour immersion afin de stimuler la mémoire de Gramont, et enfin la <strong>réception du cristal noir téléporté par Lytéa</strong> pendant la session. Aucun blessé à déplorer. La soirée s'est déroulée comme un échange pur, sans incident, sans avertissement de la part de Lytéa. L'ensemble des notes ci-dessous est retranscrit fidèlement depuis mes carnets de terrain, rédigés en temps réel.
+      </div>
+
+      <div class="data-grid">
+        <div class="data-cell">
+          <div class="dc-label">Référence dossier</div>
+          <div class="dc-value" style="font-size:11px;">NEG-UNISCA-D8-LYTEA-002</div>
+        </div>
+        <div class="data-cell dc-green">
+          <div class="dc-label">Blessés</div>
+          <div class="dc-value green">AUCUN</div>
+          <div class="dc-sub">Équipe intacte, retour confirmé</div>
+        </div>
+        <div class="data-cell">
+          <div class="dc-label">Entité contactée</div>
+          <div class="dc-value lytea" style="font-size:13px;">LYTÉA</div>
+          <div class="dc-sub">Apparition spontanée en laboratoire</div>
+        </div>
+        <div class="data-cell dc-green">
+          <div class="dc-label">Accord conclu</div>
+          <div class="dc-value green">PARTIEL</div>
+          <div class="dc-sub">2/4 caisses remises, plans reçus</div>
+        </div>
+        <div class="data-cell dc-green">
+          <div class="dc-label">Cristal noir reçu</div>
+          <div class="dc-value green">OUI</div>
+          <div class="dc-sub">Téléporté en labo pendant debriefing</div>
+        </div>
+        <div class="data-cell dc-green">
+          <div class="dc-label">Gramont téléporté</div>
+          <div class="dc-value green">RETOUR OK</div>
+          <div class="dc-sub">Schémas transmis, aucune séquelle</div>
+        </div>
+        <div class="data-cell">
+          <div class="dc-label">Point bloquant</div>
+          <div class="dc-value" style="font-size:10px;color:var(--red-alert);">[SUPPRIMÉ]</div>
+          <div class="dc-sub">Voir dossier annexe classifié</div>
+        </div>
+      </div>
+
+      <div class="panel panel-lytea" data-label="Observation personnelle">
+        <h3>Une apparition que personne n'avait anticipée</h3>
+        <p>Contrairement à notre première expédition, Lytéa n'a pas attendu que nous allions à elle. Elle est venue à nous, en plein milieu du laboratoire, sans prévenir, sans signal préalable. Le bruit sourd de la téléportation, les regards qui se figent, mon stylo qui part en l'air d'un coup. Je comprends la réaction de l'équipe. Ce que j'aurais moins compris, c'est si quelqu'un avait ouvert le feu.</p>
+        <p>Ce rapport couvre deux phases distinctes de la soirée : la négociation en laboratoire, puis le déplacement vers la porte de la ruche pour l'exécution de la transaction. Ce que nous avons obtenu en retour, les plans d'une machine gravés directement dans la mémoire de Gramont et du cristal noir livré en parallèle, représente une avancée concrète que je recommande d'analyser sans délai.</p>
+      </div>
+    </section>
+
+    <!-- SEC 01 -->
+    <section id="s01" class="c-section">
+      <div class="section-header">
+        <div class="section-num">SEC.01</div>
+        <div>
+          <div class="section-title">Participants présents</div>
+          <div class="section-title-sub">COMPOSITION DE L'ÉQUIPE // RÔLES</div>
+        </div>
+      </div>
+
+      <div class="team-grid">
+        <div class="team-card">
+          <div class="team-avatar">LT</div>
+          <div>
+            <div class="team-name">Dr. Lua Tyler</div>
+            <div class="team-role">DOCTEUR CHERCHEUSE — UNISCA D8<br>Prise de notes terrain, croquis, questions Lytéa, debriefing Gramont</div>
+          </div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar">HG</div>
+          <div>
+            <div class="team-name">Henri de Gramont</div>
+            <div class="team-role">UNISCA — CADRE ADMINISTRATIF<br>Négociateur principal, mandaté par le Mandataire, sujet de la transmission neuronale</div>
+          </div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar">RM</div>
+          <div>
+            <div class="team-name">Dr. Raphaël Mützenberg</div>
+            <div class="team-role">DIRECTEUR — UNISCA D8<br>Supervision, contact radio Mandataire, gestion logistique</div>
+          </div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar mil">AR</div>
+          <div>
+            <div class="team-name">Sgt. Arthur Roche</div>
+            <div class="team-role">ESCORTE MILITAIRE — COMMANDANT ROUGE<br>Coordination tactique, chef de l'élément rouge</div>
+          </div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar mil">UC</div>
+          <div>
+            <div class="team-name">Unité de Conscription</div>
+            <div class="team-role">ESCORTE ARMÉE — ÉLÉMENTS ROUGE, BLEU, OR<br>Sécurisation périmètre, surveillance porte de la ruche</div>
+          </div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar utc">RO</div>
+          <div>
+            <div class="team-name">Renji Oda</div>
+            <div class="team-role">RESSOURCES — UTC<br>Fourniture des 2 caisses de matières premières (résine et vodka)</div>
+          </div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar utc">JC</div>
+          <div>
+            <div class="team-name">Jessica Chen</div>
+            <div class="team-role">UTC — TECHNICIENNE<br>Présente devant la porte de la ruche, observatrice, visiblement éprouvée par la situation</div>
+          </div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar">WF</div>
+          <div>
+            <div class="team-name">Dr. William Forssman</div>
+            <div class="team-role">MÉDECIN — UNISCA D8<br>Présent lors du debriefing, a inspecté le cristal noir à son apparition</div>
+          </div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar lytea">∞</div>
+          <div>
+            <div class="team-name">Lytéa</div>
+            <div class="team-role">ENTITÉ CONTACTÉE — CONSCIENCE COMMUNE<br>Apparue spontanément dans le laboratoire, a initié la rencontre</div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- SEC 02 -->
+    <section id="s02" class="c-section">
+      <div class="section-header">
+        <div class="section-num lytea">SEC.02</div>
+        <div>
+          <div class="section-title">Apparition spontanée de Lytéa</div>
+          <div class="section-title-sub">LABORATOIRE UNISCA D8 // SANS PRÉAVIS // INITIATIVE DE L'ENTITÉ</div>
+        </div>
+      </div>
+
+      <p>Contrairement à la première rencontre où notre équipe s'était rendue dans les souterrains à sa recherche, Lytéa a cette fois décidé de venir directement à nous, dans le laboratoire UNISCA D8. L'apparition a été précédée du bruit sourd caractéristique de téléportation, sans aucun signal préalable. Mon stylo a failli quitter ma main. Quelqu'un a failli appeler des unités de protection civile supplémentaires via radio, ce que Mützenberg a stoppé net.</p>
+
+      <div class="lytea-box">
+        <div class="lytea-icon">∞</div>
+        <div class="lytea-text"><strong>Déclaration d'ouverture de Lytéa :</strong> <em>"Nous avons jugé préférable de venir à vous, plutôt que de contraindre votre forme de chair à un déplacement superflu."</em> Cette formulation confirme une conscience claire de nos capacités logistiques et une volonté active d'avancer rapidement.</div>
+      </div>
+
+      <div class="panel panel-lytea" data-label="Analyse — Dr. Tyler">
+        <h3>Ce que cette initiative signifie</h3>
+        <p>Le fait que Lytéa ait choisi de se déplacer vers nous représente un signal fort. Elle est venue dans notre espace de travail, sans agression, sans menace, avec des intentions orientées vers la finalisation de l'accord. Durant toute la négociation qui a suivi, elle n'a formulé aucun avertissement, aucune menace, aucune condition hostile. C'était un échange pur, factuel et structuré.</p>
+        <p>Lytéa a perçu la tension de l'équipe et a elle-même proposé de changer de lieu si notre présence était problématique. Gramont a refusé poliment. L'Unité de Protection Civile présente a fini par rengainer son arme et s'est calmée. L'ambiance, pour le moins inconfortable au départ, s'est normalisée rapidement une fois les premières paroles échangées.</p>
+      </div>
+
+      <div class="panel panel-blue" data-label="Contexte initial">
+        <h3>Lytéa nous a coincés dans le couloir</h3>
+        <p>Au moment de l'apparition, Mützenberg, Gramont et moi nous trouvions de l'autre côté du couloir, séparés du reste du groupe, coincés. La conscription était à distance, dans un état de tension manifeste. C'est Lytéa elle-même qui a perçu la situation et proposé de la désamorcer en suggérant que nous rejoignions le groupe, plutôt que de rester ainsi dans le couloir.</p>
+      </div>
+
+      <div class="cite-terminal">
+        <div class="cite-terminal-head">
+          <div class="cite-terminal-title">Proposition de Lytéa pour rejoindre le groupe</div>
+          <div class="cite-terminal-tag">LABORATOIRE D8 // COULOIR — OUVERTURE DE SESSION</div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev lytea">∞</div>
+          <div class="cite-terminal-text"><span class="lab lytea-name">Lytéa</span> — <em>"Souhaitez-vous, peut-être, changer nos places? Vos pairs semblent... Inquiets. Nous percevons le tumulte de leurs cœurs. Le rythme de leur chair s'accélère, une percussion de peur qui résonne dans le vide."</em></div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev">></div>
+          <div class="cite-terminal-text"><span class="lab">H. de Gramont</span> — <em>"Non, ça ira, j'ai confiance en ces hommes, ils ne feront rien de stupide."</em></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEC 03 -->
+    <section id="s03" class="c-section">
+      <div class="section-header">
+        <div class="section-num">SEC.03</div>
+        <div>
+          <div class="section-title">Déroulement — Chronologie complète</div>
+          <div class="section-title-sub">DE L'APPARITION AU RETOUR EN LABORATOIRE</div>
+        </div>
+      </div>
+
+      <div class="phase-grid">
+        <div class="phase-card">
+          <div class="phase-num">PHASE 01</div>
+          <div class="phase-name">Apparition dans le laboratoire</div>
+          <div class="phase-desc">Lytéa se manifeste spontanément dans le laboratoire D8. Réaction de surprise générale. Tyler note immédiatement. Mützenberg contacte la conscription. Gramont ouvre la négociation au nom du Mandataire.</div>
+          <div class="phase-duration">LIEU : Laboratoire UNISCA D8</div>
+        </div>
+        <div class="phase-card">
+          <div class="phase-num">PHASE 02</div>
+          <div class="phase-name">Négociation de l'échange</div>
+          <div class="phase-desc">Gramont expose les attentes du conseil. Lytéa formule sa demande : 4 unités de stockage de matières premières, quelle qu'en soit la nature. Gramont propose 2 caisses pour commencer, en échange des plans de synthèse de la pierre noire.</div>
+          <div class="phase-duration">DURÉE : ~20 minutes</div>
+        </div>
+        <div class="phase-card">
+          <div class="phase-num">PHASE 03</div>
+          <div class="phase-name">Accord accepté et départ</div>
+          <div class="phase-desc">Lytéa accepte. L'équipe se dirige vers l'UTC pour récupérer les caisses auprès de Renji Oda. Jessica Chen accompagne. La conscription est organisée en trois éléments (rouge, bleu, or) par le sergent pour sécuriser le trajet.</div>
+          <div class="phase-duration">LIEU : UTC puis départ vers souterrains</div>
+        </div>
+        <div class="phase-card">
+          <div class="phase-num">PHASE 04</div>
+          <div class="phase-name">Arrivée devant la porte de la ruche</div>
+          <div class="phase-desc">Positionnement devant la porte blindée. Caisses déposées. Gramont se concentre. Lytéa se manifeste pour vérifier la qualité des caisses. Gramont l'attendait. Jessica Chen recule contre le mur, wrench en main.</div>
+          <div class="phase-duration">LIEU : Porte de la ruche — souterrains D8</div>
+        </div>
+        <div class="phase-card">
+          <div class="phase-num">PHASE 05</div>
+          <div class="phase-name">Téléportation de Gramont</div>
+          <div class="phase-desc">Gramont respire profondément, se concentre. Il devient soudainement blanc, comme du plasma, puis une lumière verte part de lui vers l'extérieur. Il disparaît. L'équipe maintient sa position. Aucune réponse radio possible depuis la ruche.</div>
+          <div class="phase-duration">DURÉE : ~15 à 20 minutes estimées</div>
+        </div>
+        <div class="phase-card">
+          <div class="phase-num">PHASE 06</div>
+          <div class="phase-name">Retour de Gramont</div>
+          <div class="phase-desc">Gramont réapparaît. Premier mot coupé, visiblement éprouvé. Il confirme : "La mission est réussie, j'ai besoin d'un doliprane." Retour immédiat au laboratoire. Tyler note sans s'arrêter.</div>
+          <div class="phase-duration">LIEU : Porte de la ruche, retour labo</div>
+        </div>
+        <div class="phase-card">
+          <div class="phase-num">PHASE 07</div>
+          <div class="phase-name">Debriefing en laboratoire</div>
+          <div class="phase-desc">Gramont s'allonge sur le dos, bonnet de Tyler sur les yeux. Tyler conduit le debriefing. Gramont décrit la ruche, les visions de Xen, puis les schémas de la machine. L'équipe se déplace ensuite vers une piscine pour immerger Gramont et stimuler sa mémoire sur les derniers composants.</div>
+          <div class="phase-duration">LIEU : Laboratoire UNISCA D8</div>
+        </div>
+        <div class="phase-card">
+          <div class="phase-num">PHASE 08</div>
+          <div class="phase-name">Apparition du cristal noir</div>
+          <div class="phase-desc">Le cristal noir promis par Lytéa apparaît en grande quantité par téléportation, directement à côté de la piscine chez le Mandataire, pendant que Gramont avait la tête immergée. Réaction de surprise générale. Forssman est envoyé inspecter les cristaux et confirme : rien de dangereux.</div>
+          <div class="phase-duration">LIEU : Laboratoire UNISCA D8</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEC 04 -->
+    <section id="s04" class="c-section">
+      <div class="section-header">
+        <div class="section-num lytea">SEC.04</div>
+        <div>
+          <div class="section-title">Négociation — Accord conclu</div>
+          <div class="section-title-sub">TERMES // CE QUE NOUS AVONS DONNÉ // CE QUE NOUS AVONS REÇU</div>
+        </div>
+      </div>
+
+      <p>La négociation s'est tenue entièrement dans le laboratoire, avec Gramont comme interlocuteur principal. Lytéa a exposé ses besoins de manière structurée, sans pression, sans ultimatum. Il n'y a eu aucun avertissement, aucune tension hostile, aucune condition qui aurait pu faire dérailler la discussion. C'était une négociation commerciale, dans le sens le plus littéral du terme.</p>
+
+      <h2>Ce que UNISCA a fourni</h2>
+      <ul class="c-list">
+        <li><div class="li-body"><strong>2 caisses de matières premières brutes,</strong> récupérées auprès de Renji Oda à l'UTC. Contenu selon Oda : résine et vodka. Lytéa a confirmé que la nature de la matière importait peu, toute matière étant convertible pour alimenter son départ.</div></li>
+        <li><div class="li-body"><strong>Le consentement et le déplacement de H. de Gramont</strong> vers le cœur de la ruche, pour permettre la transmission directe des schémas dans sa mémoire. Gramont a accepté de son plein gré, en connaissance de cause.</div></li>
+      </ul>
+
+      <h2>Ce que UNISCA a reçu</h2>
+      <ul class="c-list">
+        <li><div class="li-body"><strong>Les plans complets de la machine de synthèse du cristal noir,</strong> gravés directement dans la mémoire neuronale de Gramont lors de son séjour dans la ruche. Gramont est désormais capable de décrire les composants et le principe de fonctionnement de cet appareil.</div></li>
+        <li><div class="li-body"><strong>Une quantité de cristal noir,</strong> téléportée directement dans le laboratoire par Lytéa pendant le debriefing de Gramont, conformément à l'accord. Forssman a confirmé l'absence de danger à l'inspection immédiate.</div></li>
+        <li><div class="li-body"><strong>La confirmation que la machine ne requiert pas de matériau spécifique :</strong> toute matière est convertible. Le seul composant particulier identifié est l'énergie noire, dont les modalités d'extraction restent à établir (voir SEC.09).</div></li>
+      </ul>
+
+      <div class="lytea-box">
+        <div class="lytea-icon">∞</div>
+        <div class="lytea-text"><strong>Déclaration de Lytéa sur ses besoins :</strong> <em>"Nos sens perçoivent une... Nécessité... Structurelle. Il Nous faut quatre unités de stockage de matière première, quelle qu'en soit la nature. Peu importe la substance que vous y placerez. Pour Nous, toute matière est une fréquence que Nous pouvons... Convertir... Pour alimenter Notre départ."</em></div>
+      </div>
+
+      <div class="panel" data-label="Les 2 caisses restantes">
+        <h3>Transaction partielle, engagement en suspens</h3>
+        <p>L'accord initial portait sur un total de 4 caisses. Nous n'en avons remis que 2 pour cette première transaction, en échange des plans et du cristal. Les 2 caisses restantes seront remises ultérieurement. Gramont a proposé cette structure en deux temps, et Lytéa l'a acceptée. Il a également précisé que la transaction complète pourrait s'accompagner d'une quantité supplémentaire de pierre noire. Cet engagement reste ouvert et devra être honoré lors d'un prochain contact.</p>
+      </div>
+
+      <div class="alert-box">
+        <div class="alert-icon">!</div>
+        <div class="alert-text"><strong>Point non traité — les colliers :</strong> la négociation pour les colliers de contrôle Vortigaunts n'a pas pu être intégrée à la session en cours, la discussion portant déjà sur les plans de la machine et l'accord étant proche de la conclusion. Ce point devra être relancé lors du prochain contact avec Lytéa.</div>
+      </div>
+    </section>
+
+    <!-- SEC 05 -->
+    <section id="s05" class="c-section">
+      <div class="section-header">
+        <div class="section-num">SEC.05</div>
+        <div>
+          <div class="section-title">Déplacement vers la porte de la ruche</div>
+          <div class="section-title-sub">UTC — RÉCUPÉRATION DES CAISSES // ORGANISATION TACTIQUE // ARRIVÉE DEVANT LA PORTE</div>
+        </div>
+      </div>
+
+      <p>Une fois l'accord conclu en laboratoire, l'équipe s'est rendue à l'UTC pour récupérer les 2 caisses de matières premières auprès de Renji Oda. Les caisses étaient vertes, et Oda a confirmé leur contenu : résine et vodka. Il a précisé qu'il restait assez de vodka "pour reprendre l'URSS", ce qui a allégé l'atmosphère d'une façon que j'ai notée.</p>
+
+      <div class="panel panel-blue" data-label="Organisation tactique">
+        <h3>Structure en éléments — Mise en place par le Sergent</h3>
+        <p>Le sergent commandant l'escorte a organisé ses hommes en trois éléments distincts avant le départ vers les souterrains, en expliquant que cette structure permettait de maintenir une hiérarchie même en cas d'effondrement du commandement. L'élément rouge était placé sous le commandement de Roche, l'élément bleu sous celui d'Allan, et le sergent lui-même constituait l'élément or. La conscription comptait au total sept personnes sur place. Des ordres radio étaient échangés régulièrement : rapport toutes les deux minutes, pas d'engagement sauf menace directe.</p>
+        <p>Du gaz ou un brouillard a été signalé par radio par l'un des conscrits en position. Le sergent a confirmé qu'il s'agissait de gaz émis par un Bob nécrotique et a ordonné de terminer les éléments nécrotiques, sans tirs. Cela ne concernait pas la zone principale et n'a pas perturbé le déroulement de la transaction.</p>
+      </div>
+
+      <div class="panel panel-lytea" data-label="Observations sur place">
+        <h3>Sur place devant la porte</h3>
+        <p>Oda a remarqué une trappe noire en hauteur au-dessus de la porte de la ruche, dont je me souvenais également. Mützenberg avait noté cette trappe lors d'une visite précédente et en a informé Gramont. Roche a retiré son masque à gaz au bout d'un moment, estimant que l'air était respirable, et plusieurs autres ont suivi.</p>
+      </div>
+    </section>
+
+    <!-- SEC 06 -->
+    <section id="s06" class="c-section">
+      <div class="section-header">
+        <div class="section-num lytea">SEC.06</div>
+        <div>
+          <div class="section-title">Téléportation de Gramont</div>
+          <div class="section-title-sub">PRÉPARATION // DISPARITION // ATTENTE // RETOUR</div>
+        </div>
+      </div>
+
+      <p>La partie la plus délicate de la soirée. Gramont avait été informé à l'avance de ce qui allait se passer, et il avait accepté. Il n'empêche que le voir disparaître en direct, sans aucun son, sans aucune explication visible, a eu un effet certain sur l'équipe présente.</p>
+
+      <div class="panel panel-lytea" data-label="Observation directe — Dr. Tyler">
+        <h3>Le moment de la téléportation</h3>
+        <p>Gramont a commencé à respirer profondément. Il m'a dit : <em>"Je crois que je vais vivre une expérience désagréable."</em> Je lui ai répondu de prendre son temps, que nous étions là. Il a fermé les yeux, s'est concentré. Puis, sans action visible de Lytéa, son corps a soudainement changé de nature, comme si sa matière devenait du plasma, d'un blanc lumineux, et une lumière verte a commencé à partir de lui vers l'extérieur. Il avait disparu avant qu'on comprenne ce qui venait de se passer. J'ai tremblé en écrivant les premières lignes qui ont suivi.</p>
+        <p>Roche a crié. J'ai immédiatement contacté le canal UNISCA pour confirmer que tout se passait comme prévu et demander à tout le monde de rester calme. C'était dans le plan. Lytéa l'avait annoncé lors de notre première rencontre sous le terme de "sédimentation de l'esprit".</p>
+      </div>
+
+      <div class="panel panel-blue" data-label="L'attente">
+        <h3>Environ quinze à vingt minutes sans nouvelles</h3>
+        <p>Pendant tout le séjour de Gramont dans la ruche, aucun contact radio n'a été possible. Mützenberg a tenté à plusieurs reprises, sans succès. La porte et les épaisseurs de béton brouillaient tout signal. L'équipe a attendu sur place. Le sergent a maintenu ses hommes en position. Retour effectué dès que Gramont a réapparu.</p>
+      </div>
+
+      <div class="panel" data-label="Le retour">
+        <h3>Gramont de retour, la mission réussie</h3>
+        <p>Gramont a réapparu debout. Son premier mot a été coupé en plein milieu. Il était pâle, les yeux sensibles à la lumière, mais conscient et cohérent. Il a demandé un doliprane. Ses premières paroles complètes : <em>"Pour votre gouverne, je n'ai pas de super-pouvoir, et j'ai vu deux Bob."</em> Puis : <em>"La mission est réussie."</em> Le retour vers le laboratoire a été immédiat.</p>
+      </div>
+    </section>
+
+    <!-- SEC 07 -->
+    <section id="s07" class="c-section">
+      <div class="section-header">
+        <div class="section-num lytea">SEC.07</div>
+        <div>
+          <div class="section-title">Debriefing — Visions &amp; Schémas reçus</div>
+          <div class="section-title-sub">RUCHE DÉCRITE // VISIONS DE XEN // PLANS DE LA MACHINE // IMMERSION EN PISCINE</div>
+        </div>
+      </div>
+
+      <p>De retour au laboratoire, Gramont s'est allongé sur le dos. Je lui ai passé mon bonnet pour couvrir ses yeux, sensibles à la lumière. J'ai demandé via radio qu'on apporte de l'eau et à manger. Lavinia Eve Wacelin était descendue pour voir son état, mais Gramont n'avait pas besoin d'elle sur le moment. J'ai conduit le debriefing moi-même, crayon en main, en lui demandant de décrire ce qu'il avait vécu depuis le début, chronologiquement.</p>
+
+      <h2>La ruche — Description intérieure</h2>
+
+      <div class="panel panel-lytea" data-label="Témoignage — H. de Gramont">
+        <h3>Ce que Gramont a vu dans la ruche</h3>
+        <p>La zone où il a été conduit était <strong>organique et close</strong>. Il décrit des excroissances ressemblant à des piques blancs, organiques, s'élevant de la surface. Lytéa communiquait directement dans son esprit, sans son, sans voix audible. Il a vu deux créatures ressemblant à ce que nous appelons Bob. Il a précisé qu'elles étaient <strong>intactes</strong>, c'est-à-dire non vertes et non mourantes, contrairement au Bob que nous avions croisé lors de la première expédition. Leur présence était passive.</p>
+        <p>Il s'est évanoui à un moment donné. Ses forces l'ont quitté progressivement, puis il a perdu conscience. C'est à ce moment que les transmissions ont commencé.</p>
+      </div>
+
+      <h2>Les visions de Xen</h2>
+
+      <p>Après l'évanouissement, Gramont a reçu des visions qu'il décrit comme des paysages de Xen. Il a vu des créatures volant dans un ciel qu'il ne pouvait pas caractériser davantage, ainsi qu'une forêt d'aspect inconnu. Il ne sait pas s'il était présent physiquement dans ces paysages ou si c'était comparable à un rêve. Il ne sait pas non plus si Lytéa a intentionnellement inclus ces visions dans la transmission ou si elles sont apparues comme un effet secondaire du contact mental direct.</p>
+
+      <div class="info-box">
+        <div class="info-icon">[i]</div>
+        <div class="info-text">Point important : Gramont a été interrogé explicitement sur la présence de <strong>dangers, avertissements ou informations inquiétantes</strong> transmis par Lytéa. Sa réponse était claire et sans ambiguïté : <strong>non.</strong> Il n'a reçu aucun avertissement, aucune mise en garde, aucune information alarmante de la part de l'entité. La transmission était centrée sur les plans de la machine. C'était un échange simple, sans composante menaçante.</div>
+      </div>
+
+      <h2>Les schémas de la machine — Extraction progressive</h2>
+
+      <p>Les plans de la machine sont remontés à la surface de la mémoire de Gramont progressivement, en réponse à mes questions. Il a d'abord décrit le principe général, puis les composants. À un moment, la mémoire s'est bloquée sur le composant dit <strong>énergie noire</strong>. C'est à ce stade que j'ai utilisé le bac d'eau présent dans le laboratoire.</p>
+
+      <div class="panel panel-blue" data-label="Méthode — Dr. Tyler">
+        <h3>Immersion dans la piscine pour stimuler la mémoire</h3>
+        <p>Gramont ne parvenait pas à se souvenir des détails sur certains composants, en particulier l'énergie noire. Nous nous sommes déplacés vers une piscine disponible sur place pour tenter de stimuler sa remémoration sensorielle par immersion. J'ai demandé à Gramont de plonger la tête sous l'eau. Il a obtempéré. L'immersion a permis de faire remonter certains détails supplémentaires, mais ses souvenirs sur l'énergie noire restaient incomplets à ce stade. Il lui faudra du temps. Les informations relatives à ce composant sont consignées séparément (voir SEC.09).</p>
+      </div>
+    </section>
+
+    <!-- SEC 08 -->
+    <section id="s08" class="c-section">
+      <div class="section-header">
+        <div class="section-num lytea">SEC.08</div>
+        <div>
+          <div class="section-title">Cristal Noir Reçu</div>
+          <div class="section-title-sub">TÉLÉPORTATION PENDANT LE DEBRIEFING // RÉCEPTION CONFIRMÉE // INCIDENT AVEC LE MANDATAIRE</div>
+        </div>
+      </div>
+
+      <p>Pendant que Gramont avait la tête immergée dans la piscine, le cristal noir promis par Lytéa a fait son apparition par téléportation, à côté de la piscine, conformément à l'accord. Ce n'était pas prévu à ce moment précis de la soirée, et la réaction dans la pièce l'a bien illustré.</p>
+
+      <div class="panel" data-label="Réception du cristal">
+        <h3>Apparition et inspection immédiate</h3>
+        <p>La réaction dans la pièce a été immédiate à l'apparition du cristal. Mützenberg a identifié qu'il s'agissait très probablement du cristal promis par Lytéa. Forssman a été envoyé inspecter les cristaux. Sa conclusion : rien de dangereux. Mützenberg avait enfilé des gants avant de s'approcher, par précaution. La situation s'est normalisée en quelques secondes.</p>
+      </div>
+
+      <div class="vort-box">
+        <div class="vort-icon">&gt;</div>
+        <div class="vort-text"><strong>Rappel objectif Vortigaunts :</strong> la réception du cristal noir est directement liée à notre stratégie globale vis-à-vis des Vortigaunts du district. Ce cristal constitue la matière première pour les colliers de contrôle. Sa production à grande échelle via la machine de synthèse reste l'objectif final de cet accord.</div>
+      </div>
+    </section>
+
+    <!-- SEC 09 -->
+    <section id="s09" class="c-section">
+      <div class="section-header">
+        <div class="section-num">SEC.09</div>
+        <div>
+          <div class="section-title">Composant Requis — [Données Supprimées]</div>
+          <div class="section-title-sub">INFORMATIONS CLASSIFIÉES // ACCÈS RESTREINT // DOSSIER ANNEXE</div>
+        </div>
+      </div>
+
+      <p>Le composant dit <strong>énergie noire</strong> est apparu dans le debriefing de Gramont comme un élément indispensable au fonctionnement de la machine. Les informations obtenues au cours de la soirée concernant la nature, l'origine et les conditions d'accès à cette ressource ont été retirées de ce rapport avant diffusion. Ces données figurent dans un dossier séparé soumis aux niveaux d'accréditation supérieurs.</p>
+
+      <div class="panel panel-censored" data-label="NOTE RENSEIGNEMENT">
+        <h3>Renseignements — Énergie Noire</h3>
+        <p class="redacted-block">Les informations relatives à la nature de l'énergie noire, à son origine, aux déclarations obtenues lors de la session, et aux conditions d'accès à cette ressource ont été retirées de ce rapport avant diffusion. Ces données figurent dans un dossier séparé non accessible à ce niveau de classification. Le contenu de ce paragraphe a été jugé non distribuable dans sa forme originale. Référence interne : [SUPPRIMÉ].</p>
+        <p class="redacted-block">Éléments complémentaires recueillis lors du debriefing concernant les implications stratégiques du composant requis pour la machine de synthèse du cristal noir. Ces informations sont classifiées au-delà du niveau de diffusion standard de ce rapport. Demander accès via canal sécurisé UNISCA D8 supérieur. Référence dossier annexe : [SUPPRIMÉ].</p>
+      </div>
+    </section>
+
+    <!-- SEC 10 -->
+    <section id="s10" class="c-section">
+      <div class="section-header">
+        <div class="section-num">SEC.10</div>
+        <div>
+          <div class="section-title">Machine de synthèse — Composants connus</div>
+          <div class="section-title-sub">CE QUE GRAMONT A MÉMORISÉ // PRINCIPE DE FONCTIONNEMENT</div>
+        </div>
+      </div>
+
+      <div class="c-table-wrapper">
+        <table class="c-table">
+          <thead>
+            <tr>
+              <th>Composant</th>
+              <th>Rôle</th>
+              <th>Statut</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="highlight">Résonateur à flux de cristal</td>
+              <td>Induit la croissance du cristal à partir de la matière brute fournie</td>
+              <td class="highlight-vort">À CONSTRUIRE</td>
+            </tr>
+            <tr>
+              <td class="highlight">Stabilisateur</td>
+              <td>Maintient la cohérence du cristal pendant sa formation, l'empêche de disparaître</td>
+              <td class="highlight-vort">À CONSTRUIRE</td>
+            </tr>
+            <tr>
+              <td class="highlight">Prisme de focalisation</td>
+              <td>Lentille convergente pour l'énergie provenant de la matière entrante</td>
+              <td class="highlight-vort">À CONSTRUIRE</td>
+            </tr>
+            <tr>
+              <td class="highlight">Support de formation</td>
+              <td>Structure physique sur laquelle le cristal se forme et se consolide</td>
+              <td class="highlight-vort">À CONSTRUIRE</td>
+            </tr>
+            <tr>
+              <td class="highlight" style="color:var(--red-alert);">[SUPPRIMÉ]</td>
+              <td style="color:var(--text-dim);font-style:italic;">Données supprimées — voir dossier annexe classifié</td>
+              <td style="color:var(--red-alert);font-weight:700;">[SUPPRIMÉ]</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="panel panel-blue" data-label="Taille et faisabilité">
+        <h3>Une machine à taille humaine</h3>
+        <p>Gramont a précisé que la machine, malgré sa complexité, est d'une taille relativement modeste. Ce n'est pas une infrastructure de grande envergure. Elle convertit de la matière en cristal noir, quelle que soit la nature de cette matière. Gramont a indiqué qu'il lui faudrait du temps pour que les détails se précisent davantage, notamment la disposition du support et les spécifications du dernier composant requis. Un debriefing complémentaire dans les jours à venir est recommandé.</p>
+      </div>
+    </section>
+
+    <!-- SEC 11 -->
+    <section id="s11" class="c-section">
+      <div class="section-header">
+        <div class="section-num">SEC.11</div>
+        <div>
+          <div class="section-title">Conclusions</div>
+          <div class="section-title-sub">BILAN // ÉVALUATION GÉNÉRALE // POINTS DE VIGILANCE</div>
+        </div>
+      </div>
+
+      <div class="panel" data-label="Bilan — Dr. Tyler">
+        <h3>Une soirée productive, sans incident</h3>
+        <p>Cette session a été, du point de vue opérationnel, un succès complet. Nous avons négocié un accord, l'avons exécuté, reçu les plans d'une machine de synthèse gravés dans la mémoire d'un de nos membres, et récupéré une quantité de cristal noir livré spontanément par Lytéa. Aucun blessé, aucun incident physique, aucune menace, aucun avertissement de Lytéa. L'entité a respecté sa part de l'accord à la lettre.</p>
+        <p>Un composant requis pour la machine reste à obtenir. Sans lui, la machine ne peut pas fonctionner et le cristal ne peut pas être produit à grande échelle. Les démarches correspondantes ont été initiées. Voir dossier annexe classifié.</p>
+      </div>
+    </section>
+
+    <!-- SEC 12 -->
+    <section id="s12" class="c-section">
+      <div class="section-header">
+        <div class="section-num">SEC.12</div>
+        <div>
+          <div class="section-title">Recommandations</div>
+          <div class="section-title-sub">ACTIONS PRIORITAIRES // SUIVI RECOMMANDÉ</div>
+        </div>
+      </div>
+
+      <ul class="c-list">
+        <li><div class="li-body"><strong>Debriefing complémentaire de Gramont</strong> dans les prochains jours. Sa mémoire continue de restituer des éléments. Les spécifications du support de formation et des derniers composants méritent une session dédiée, dans le calme, sans pression.</div></li>
+        <li><div class="li-body"><strong>Enquête urgente sur l'énergie noire.</strong> Les conditions d'accès à cette ressource doivent être évaluées en priorité via les canaux appropriés. Caractériser sa nature physique, ses conditions de stockage et les risques d'exposition est nécessaire avant toute tentative de construction de la machine. Voir dossier annexe classifié.</div></li>
+        <li><div class="li-body"><strong>Analyse du cristal noir reçu.</strong> Le cristal téléporté dans le laboratoire doit être analysé en priorité : composition, propriétés, réponse aux biotiques, compatibilité avec les dispositifs de colliers envisagés pour les Vortigaunts.</div></li>
+        <li><div class="li-body"><strong>Remise des 2 caisses restantes à Lytéa.</strong> Organiser cette seconde livraison, idéalement en l'articulant autour de la négociation sur les colliers. C'est notre meilleur levier de négociation restant.</div></li>
+        <li><div class="li-body"><strong>Ne pas révéler le blocage de l'énergie noire à Lytéa</strong> avant d'avoir une idée claire de nos marges de manœuvre. Cette information pourrait modifier les termes de la négociation en notre défaveur.</div></li>
+        <li><div class="li-body"><strong>Surveillance de Gramont.</strong> Il présentait une sensibilité accrue à la lumière à son retour. À surveiller dans les jours suivants : troubles du sommeil, visions résiduelles de Xen, changements de comportement inhabituels.</div></li>
+      </ul>
+    </section>
+
+    <!-- SEC 13 -->
+    <section id="s13" class="c-section">
+      <div class="section-header">
+        <div class="section-num">SEC.13</div>
+        <div>
+          <div class="section-title">Retranscription — Extraits clés</div>
+          <div class="section-title-sub">ANNEXE // NOTES TERRAIN // ÉCHANGES SIGNIFICATIFS</div>
+        </div>
+      </div>
+
+      <div class="reader-note">
+        <div class="rn-title">// Note de retranscription //</div>
+        Les extraits suivants couvrent les deux phases de la soirée : la négociation en laboratoire, puis le debriefing de Gramont à son retour. Ils sont sélectionnés pour leur importance analytique ou leur caractère révélateur sur le mode de communication de Lytéa.
+      </div>
+
+      <h2>Négociation en laboratoire</h2>
+
+      <div class="cite-terminal">
+        <div class="cite-terminal-head">
+          <div class="cite-terminal-title">Sur la notion de "jeûne" imposé à la ruche</div>
+          <div class="cite-terminal-tag">LABORATOIRE D8 // OUVERTURE</div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev">></div>
+          <div class="cite-terminal-text"><span class="lab">H. de Gramont</span> — <em>"Tout d'abord, nous aimerons savoir si le jeûne des ressources n'a pas trop impacté votre ruche, cela a dû éprouver votre énergie de ne pas vous nourrir pendant une semaine."</em></div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev lytea">∞</div>
+          <div class="cite-terminal-text"><span class="lab lytea-name">Lytéa</span> — <em>"Ce que vous nommez jeûne n'est qu'une illusion de vos sens. Pour Nous, cela n'est qu'un ralentissement de la fréquence de Notre départ. Chaque ressource manquante est un poids qui ancre Notre pèlerinage dans l'inertie, rien d'autre."</em></div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev lytea">∞</div>
+          <div class="cite-terminal-text"><span class="lab lytea-name">Lytéa</span> — <em>"Notre espèce ne connaît pas les chaînes de la faim. Nous n'avons aucun besoin de... Nous sustenter... Pour restaurer Notre essence, contrairement à votre biologie de chair."</em></div>
+        </div>
+      </div>
+
+      <div class="cite-terminal">
+        <div class="cite-terminal-head">
+          <div class="cite-terminal-title">Sur la garantie demandée par le conseil</div>
+          <div class="cite-terminal-tag">LABORATOIRE D8 // NÉGOCIATION</div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev">></div>
+          <div class="cite-terminal-text"><span class="lab">H. de Gramont</span> — <em>"Bien, un problème se pose, le conseil veut une garantie dans le transfert des ressources."</em></div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev lytea">∞</div>
+          <div class="cite-terminal-text"><span class="lab lytea-name">Lytéa</span> — <em>"Nous comprenons votre méfiance. C'est un voile qui obscurcit la vérité. Mais dites-Nous... Qu'attendent vos pairs, exactement? Quelle forme doit prendre Notre gage pour apaiser leur esprit?"</em></div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev">></div>
+          <div class="cite-terminal-text"><span class="lab">Dr. Lua Tyler</span> — <em>"Nos supérieurs ne jurent que par les preuves, Lytéa. Ils souhaitent des preuves."</em></div>
+        </div>
+      </div>
+
+      <div class="cite-terminal">
+        <div class="cite-terminal-head">
+          <div class="cite-terminal-title">Sur la transmission du savoir à plusieurs personnes</div>
+          <div class="cite-terminal-tag">LABORATOIRE D8 // NÉGOCIATION</div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev">></div>
+          <div class="cite-terminal-text"><span class="lab">Dr. Lua Tyler</span> — <em>"Pourriez-vous transmettre ce savoir à multiples d'entre-nous, ou serait-ce uniquement une personne?"</em></div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev lytea">∞</div>
+          <div class="cite-terminal-text"><span class="lab lytea-name">Lytéa</span> — <em>"C'est une... Sédimentation... De l'esprit. Un processus qui exige une lenteur que votre temps linéaire peine à mesurer. Mais si tel est jugé... Nécessaire... Par votre volonté, Nous le pourrons. Nous ralentirons Notre propre flux pour nous synchroniser avec la fragilité de vos synapses."</em></div>
+        </div>
+      </div>
+
+      <div class="cite-terminal">
+        <div class="cite-terminal-head">
+          <div class="cite-terminal-title">Sur le départ de Lytéa en fin de session</div>
+          <div class="cite-terminal-tag">LABORATOIRE D8 // CLÔTURE</div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev lytea">∞</div>
+          <div class="cite-terminal-text"><span class="lab lytea-name">Lytéa</span> — <em>"Si votre dialogue a atteint sa... résolution... Nous souhaiterions libérer cette forme pour retourner à la fluidité du vide. Votre monde est si... Rigide."</em></div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev lytea">∞</div>
+          <div class="cite-terminal-text"><span class="lab lytea-name">Lytéa</span> — <em>"Nous nous remanifesterons quand nous ressentirons le flux de votre désir."</em></div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev">></div>
+          <div class="cite-terminal-text"><span class="lab">Dr. Lua Tyler</span> — <em>"Merci pour votre temps, Lytéa. À bientôt."</em></div>
+        </div>
+      </div>
+
+      <h2>Debriefing de Gramont au laboratoire</h2>
+
+      <div class="cite-terminal">
+        <div class="cite-terminal-head">
+          <div class="cite-terminal-title">Description de la ruche et des deux Bob</div>
+          <div class="cite-terminal-tag">LABORATOIRE D8 // DEBRIEFING POST-RETOUR</div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev">></div>
+          <div class="cite-terminal-text"><span class="lab">H. de Gramont</span> — <em>"J'étais dans le cœur de la ruche, je crois. C'était assez clos. C'était... Organique. Il y avait des excroissances étranges, comme des piques blancs, mais organique."</em></div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev">></div>
+          <div class="cite-terminal-text"><span class="lab">H. de Gramont</span> — <em>"Il me parlait, dans ma tête. Il y avait deux créatures, ressemblant à Bob j'imagine. Intactes."</em></div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev">></div>
+          <div class="cite-terminal-text"><span class="lab">H. de Gramont</span> — <em>"J'ai senti mes forces partir, et je me suis évanoui. Après, j'ai eu des sortes de visions. Des paysages de Xen. Des créatures qui volaient dans le ciel. Une autre vision, ça ressemblait à une forêt."</em></div>
+        </div>
+      </div>
+
+      <div class="cite-terminal">
+        <div class="cite-terminal-head">
+          <div class="cite-terminal-title">Absence de danger ou d'avertissement transmis par Lytéa</div>
+          <div class="cite-terminal-tag">LABORATOIRE D8 // DEBRIEFING</div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev">></div>
+          <div class="cite-terminal-text"><span class="lab">Dr. Lua Tyler</span> — <em>"Qu'est-ce que tu as vu d'autre. Un danger, un avertissement, quelque chose dont on devrait se méfier?"</em></div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev">></div>
+          <div class="cite-terminal-text"><span class="lab">H. de Gramont</span> — <em>"Non."</em></div>
+        </div>
+      </div>
+
+      <div class="cite-terminal">
+        <div class="cite-terminal-head">
+          <div class="cite-terminal-title">Composants de la machine détaillés</div>
+          <div class="cite-terminal-tag">LABORATOIRE D8 // DEBRIEFING</div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev">></div>
+          <div class="cite-terminal-text"><span class="lab">H. de Gramont</span> — <em>"Un résonateur à flux de cristal, qui va servir à faire croître le cristal."</em></div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev">></div>
+          <div class="cite-terminal-text"><span class="lab">H. de Gramont</span> — <em>"Un stabilisateur, afin d'éviter que le cristal disparaisse durant sa formation."</em></div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev">></div>
+          <div class="cite-terminal-text"><span class="lab">H. de Gramont</span> — <em>"Un prisme de focalisation, comme une lentille afin de converger l'énergie provenant de la matière entrante."</em></div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev">></div>
+          <div class="cite-terminal-text"><span class="lab">H. de Gramont</span> — <em>"J'ai vu également un support, où le cristal se forme."</em></div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev">></div>
+          <div class="cite-terminal-text"><span class="lab">H. de Gramont</span> — <em>"De l'énergie noire. Je ne sais pas encore comment on en extrait."</em></div>
+        </div>
+        <div class="cite-terminal-row">
+          <div class="cite-terminal-chev">></div>
+          <div class="cite-terminal-text"><span class="lab">H. de Gramont</span> (sur les matériaux) — <em>"Je pense que ça importe peu. Tant qu'il y a de la matière, la machine pourra recréer le cristal."</em></div>
+        </div>
+      </div>
+
+
+    </section>
+
+  </main>
+</div>
+
+<footer class="c-footer">
+  <div class="left">
+    UNISCA DIVISION RECHERCHE BIOTIQUE // DISTRICT 8 // CITÉ 13<br>
+    NEG-UNISCA-D8-LYTEA-002 — SECOND CONTACT LYTÉA — ACCORD PARTIEL — TÉLÉPORTATION GRAMONT — CRISTAL NOIR REÇU<br>
+    RÉDIGÉ PAR : DR. LUA TYLER // DOCTEUR CHERCHEUSE UNISCA D8
+  </div>
+  <div class="right">
+    CONFIDENTIEL<br>
+    ACCÈS RESTREINT<br>
+    UNISCA D8 UNIQUEMENT
+  </div>
+</footer>
+
+</body>
+</html>
